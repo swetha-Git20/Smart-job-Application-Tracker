@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartTrack Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#fcf8ff",
+                      "surface-variant": "#e4e1ee",
+                      "secondary-fixed": "#d3e4fe",
+                      "inverse-primary": "#c3c0ff",
+                      "on-tertiary-fixed": "#351000",
+                      "surface-bright": "#fcf8ff",
+                      "tertiary-fixed": "#ffdbcc",
+                      "primary-fixed": "#e2dfff",
+                      "on-tertiary-fixed-variant": "#7b2f00",
+                      "background": "#fcf8ff",
+                      "secondary-fixed-dim": "#b7c8e1",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed": "#0b1c30",
+                      "outline": "#777587",
+                      "primary": "#3525cd",
+                      "on-secondary-fixed-variant": "#38485d",
+                      "tertiary-fixed-dim": "#ffb695",
+                      "on-surface-variant": "#464555",
+                      "tertiary": "#7e3000",
+                      "surface-container": "#f0ecf9",
+                      "on-primary-container": "#dad7ff",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#e4e1ee",
+                      "inverse-on-surface": "#f3effc",
+                      "on-primary": "#ffffff",
+                      "on-background": "#1b1b24",
+                      "secondary": "#505f76",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface-container-high": "#eae6f4",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f5f2ff",
+                      "on-error-container": "#93000a",
+                      "secondary-container": "#d0e1fb",
+                      "on-secondary-container": "#54647a",
+                      "tertiary-container": "#a44100",
+                      "on-tertiary-container": "#ffd2be",
+                      "inverse-surface": "#302f39",
+                      "surface-dim": "#dcd8e5",
+                      "on-surface": "#1b1b24",
+                      "on-primary-fixed": "#0f0069",
+                      "primary-container": "#4f46e5",
+                      "outline-variant": "#c7c4d8",
+                      "surface-tint": "#4d44e3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "container-padding-mobile": "16px",
+                      "md": "16px",
+                      "container-padding-desktop": "40px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "mono-sm": ["JetBrains Mono"],
+                      "display-lg-mobile": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "headline-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "mono-sm": ["13px", {"lineHeight": "20px", "fontWeight": "450"}],
+                      "display-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-sm": ["18px", {"lineHeight": "28px", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen pb-24 font-body-sm text-body-sm">
+<!-- TopNavBar (Mobile) -->
+<header class="fixed top-0 left-0 w-full z-40 bg-background/80 backdrop-blur-md border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-container-padding-mobile">
+<div class="text-headline-sm font-headline-sm font-bold text-primary">SmartTrack</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-24 px-container-padding-mobile flex flex-col gap-lg">
+<div class="flex justify-between items-center">
+<h1 class="text-headline-md font-headline-md text-on-background">Analytics Overview</h1>
+</div>
+<!-- Bento Grid: Stat Cards -->
+<div class="grid grid-cols-2 gap-sm">
+<!-- Stat Card 1 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col gap-sm shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<div class="flex justify-between items-start">
+<span class="text-label-caps font-label-caps text-on-surface-variant">TOTAL APPLICATIONS</span>
+<div class="bg-primary-container/10 text-primary-container px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+<span class="text-label-caps font-label-caps">12%</span>
+</div>
+</div>
+<div class="text-display-lg-mobile font-display-lg-mobile text-on-surface">148</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col gap-sm shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<div class="flex justify-between items-start">
+<span class="text-label-caps font-label-caps text-on-surface-variant">INTERVIEWS</span>
+<div class="bg-primary-container/10 text-primary-container px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+<span class="text-label-caps font-label-caps">5%</span>
+</div>
+</div>
+<div class="text-display-lg-mobile font-display-lg-mobile text-on-surface">24</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col gap-sm shadow-[0_4px_12px_rgba(0,0,0,0.04)] col-span-2">
+<div class="flex justify-between items-start">
+<span class="text-label-caps font-label-caps text-on-surface-variant">RESPONSE RATE</span>
+<div class="bg-error/10 text-error px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+<span class="text-label-caps font-label-caps">2%</span>
+</div>
+</div>
+<div class="text-display-lg-mobile font-display-lg-mobile text-on-surface">16.2%</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="flex flex-col gap-lg">
+<!-- Donut Chart Placeholder (CSS Driven) -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<h3 class="text-headline-sm font-headline-sm text-on-surface mb-lg">Application Status</h3>
+<div class="flex flex-col items-center gap-md">
+<div class="relative w-48 h-48 rounded-full border-[16px] border-surface-variant" style="background: conic-gradient(from 0deg, #3525cd 0% 40%, #c3c0ff 40% 70%, #ba1a1a 70% 85%, #dcd8e5 85% 100%);">
+<div class="absolute inset-0 m-auto w-32 h-32 bg-surface rounded-full flex items-center justify-center">
+<span class="text-headline-md font-headline-md">148</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-sm justify-center">
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-primary"></div><span class="text-label-caps font-label-caps">Applied (40%)</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-primary-fixed-dim"></div><span class="text-label-caps font-label-caps">Interviewing (30%)</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-error"></div><span class="text-label-caps font-label-caps">Rejected (15%)</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-surface-dim"></div><span class="text-label-caps font-label-caps">Ghosted (15%)</span></div>
+</div>
+</div>
+</div>
+<!-- Bar Chart Placeholder (CSS Driven) -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<h3 class="text-headline-sm font-headline-sm text-on-surface mb-lg">Activity (Last 7 Days)</h3>
+<div class="h-48 flex items-end justify-between gap-2 px-2">
+<div class="w-full bg-primary/20 h-[30%] rounded-t-sm relative"><div class="absolute -top-6 w-full text-center text-label-caps font-label-caps text-on-surface-variant">4</div></div>
+<div class="w-full bg-primary h-[80%] rounded-t-sm relative"><div class="absolute -top-6 w-full text-center text-label-caps font-label-caps text-on-surface-variant">12</div></div>
+<div class="w-full bg-primary/40 h-[45%] rounded-t-sm relative"><div class="absolute -top-6 w-full text-center text-label-caps font-label-caps text-on-surface-variant">6</div></div>
+<div class="w-full bg-primary/10 h-[15%] rounded-t-sm relative"><div class="absolute -top-6 w-full text-center text-label-caps font-label-caps text-on-surface-variant">2</div></div>
+<div class="w-full bg-primary/60 h-[60%] rounded-t-sm relative"><div class="absolute -top-6 w-full text-center text-label-caps font-label-caps text-on-surface-variant">9</div></div>
+<div class="w-full bg-primary/80 h-[70%] rounded-t-sm relative"><div class="absolute -top-6 w-full text-center text-label-caps font-label-caps text-on-surface-variant">10</div></div>
+<div class="w-full bg-primary/30 h-[35%] rounded-t-sm relative"><div class="absolute -top-6 w-full text-center text-label-caps font-label-caps text-on-surface-variant">5</div></div>
+</div>
+<div class="flex justify-between mt-sm text-label-caps font-label-caps text-on-surface-variant px-2 border-t border-outline-variant pt-2">
+<span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface border-t border-outline-variant shadow-lg flex justify-around items-center h-16 pb-safe tap-highlight-transparent">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-variant w-full h-full" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="dashboard">dashboard</span>
+<span class="text-label-caps font-label-caps">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-variant w-full h-full" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="work">work</span>
+<span class="text-label-caps font-label-caps">Apps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-variant w-full h-full" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="event_available">event_available</span>
+<span class="text-label-caps font-label-caps">Interviews</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary active:bg-surface-variant w-full h-full" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-label-caps font-label-caps font-bold">Analytics</span>
+</a>
+</nav>
+</body></html>

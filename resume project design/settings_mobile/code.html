@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - SmartTrack</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@450&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fcf8ff",
+                    "surface-variant": "#e4e1ee",
+                    "secondary-fixed": "#d3e4fe",
+                    "inverse-primary": "#c3c0ff",
+                    "on-tertiary-fixed": "#351000",
+                    "surface-bright": "#fcf8ff",
+                    "tertiary-fixed": "#ffdbcc",
+                    "primary-fixed": "#e2dfff",
+                    "on-tertiary-fixed-variant": "#7b2f00",
+                    "background": "#fcf8ff",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#0b1c30",
+                    "outline": "#777587",
+                    "primary": "#3525cd",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "tertiary-fixed-dim": "#ffb695",
+                    "on-surface-variant": "#464555",
+                    "tertiary": "#7e3000",
+                    "surface-container": "#f0ecf9",
+                    "on-primary-container": "#dad7ff",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e4e1ee",
+                    "inverse-on-surface": "#f3effc",
+                    "on-primary": "#ffffff",
+                    "on-background": "#1b1b24",
+                    "secondary": "#505f76",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#eae6f4",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f5f2ff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#d0e1fb",
+                    "on-secondary-container": "#54647a",
+                    "tertiary-container": "#a44100",
+                    "on-tertiary-container": "#ffd2be",
+                    "inverse-surface": "#302f39",
+                    "surface-dim": "#dcd8e5",
+                    "on-surface": "#1b1b24",
+                    "on-primary-fixed": "#0f0069",
+                    "primary-container": "#4f46e5",
+                    "outline-variant": "#c7c4d8",
+                    "surface-tint": "#4d44e3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "container-padding-mobile": "16px",
+                    "md": "16px",
+                    "container-padding-desktop": "40px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "label-caps": [
+                            "Inter"
+                    ],
+                    "mono-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "display-lg-mobile": [
+                            "Inter"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ],
+                    "headline-sm": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "36px",
+                            {
+                                    "lineHeight": "44px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "mono-sm": [
+                            "13px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "450"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "34px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-sm": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Custom toggle styles */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #3525cd;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3525cd;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased pb-24 font-body-md md:hidden">
+<!-- Top Navigation (Mobile Setting) -->
+<header class="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-outline-variant px-container-padding-mobile h-16 flex items-center justify-between">
+<h1 class="text-headline-md font-headline-md text-primary">Settings</h1>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</header>
+<main class="p-container-padding-mobile space-y-xl">
+<!-- Profile Section -->
+<section class="space-y-sm">
+<h2 class="text-label-caps font-label-caps text-outline uppercase tracking-wider">Account</h2>
+<div class="bg-surface rounded-lg border border-outline-variant p-md flex items-center space-x-md shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-headline-md font-headline-md">
+                    JD
+                </div>
+<div class="flex-1">
+<h3 class="text-body-md font-body-md font-semibold">Jane Doe</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">jane.doe@example.com</p>
+</div>
+<button class="text-primary text-body-sm font-body-sm font-semibold p-sm hover:bg-surface-variant rounded-md transition-colors">
+                    Edit
+                </button>
+</div>
+</section>
+<!-- Preferences Section -->
+<section class="space-y-sm">
+<h2 class="text-label-caps font-label-caps text-outline uppercase tracking-wider">Preferences</h2>
+<div class="bg-surface rounded-lg border border-outline-variant divide-y divide-outline-variant shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<!-- Theme Toggle -->
+<div class="p-md flex items-center justify-between">
+<div>
+<h3 class="text-body-md font-body-md">Dark Mode</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Switch to dark theme</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out z-10" id="theme-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-surface-variant cursor-pointer" for="theme-toggle"></label>
+</div>
+</div>
+<!-- Notifications -->
+<div class="p-md flex items-center justify-between">
+<div>
+<h3 class="text-body-md font-body-md">Push Notifications</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Interview reminders</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out z-10" id="notif-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-surface-variant cursor-pointer" for="notif-toggle"></label>
+</div>
+</div>
+</div>
+</section>
+<!-- Danger Zone -->
+<section class="space-y-sm pt-md">
+<h2 class="text-label-caps font-label-caps text-error uppercase tracking-wider">Danger Zone</h2>
+<div class="bg-error-container rounded-lg border border-error p-md space-y-md shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<div>
+<h3 class="text-body-md font-body-md font-semibold text-on-error-container">Reset Account Data</h3>
+<p class="text-body-sm font-body-sm text-on-error-container/80 mt-1">This will permanently delete all your saved applications and interviews. This action cannot be undone.</p>
+</div>
+<button class="w-full bg-error text-on-error rounded-lg py-sm px-md text-body-md font-body-md font-semibold hover:bg-error/90 transition-colors shadow-sm" id="reset-btn">
+                    Reset Data
+                </button>
+</div>
+</section>
+</main>
+<!-- Confirmation Modal Overlay -->
+<div class="fixed inset-0 z-50 bg-on-background/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center" id="confirmation-modal">
+<div class="bg-surface w-full rounded-t-xl sm:rounded-xl p-lg pb-safe space-y-lg transform translate-y-full transition-transform duration-300 shadow-lg" id="modal-content">
+<div class="flex items-center space-x-sm text-error">
+<span class="material-symbols-outlined text-display-lg-mobile" data-icon="warning">warning</span>
+<h3 class="text-headline-md font-headline-md">Are you sure?</h3>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">
+                You are about to delete all your application data. This is a permanent action and cannot be reversed.
+            </p>
+<div class="flex flex-col space-y-sm">
+<button class="w-full bg-error text-on-error rounded-lg py-md text-body-md font-body-md font-semibold hover:bg-error/90 transition-colors" id="confirm-reset-btn">
+                    Yes, Delete Everything
+                </button>
+<button class="w-full bg-transparent border border-outline text-on-surface rounded-lg py-md text-body-md font-body-md font-semibold hover:bg-surface-variant transition-colors" id="cancel-reset-btn">
+                    Cancel
+                </button>
+</div>
+</div>
+</div>
+<!-- BottomNavBar Component from JSON -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface border-t border-outline-variant shadow-lg flex justify-around items-center h-16 pb-safe tap-highlight-transparent">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors w-full h-full active:bg-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-label-caps font-label-caps mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors w-full h-full active:bg-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+<span class="text-label-caps font-label-caps mt-1">Apps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors w-full h-full active:bg-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+<span class="text-label-caps font-label-caps mt-1">Interviews</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-secondary-container rounded-lg m-1 w-full h-full font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="menu" style="font-variation-settings: 'FILL' 1;">menu</span>
+<span class="text-label-caps font-label-caps mt-1">More</span>
+</a>
+</nav>
+<script>
+        // Modal Logic
+        const resetBtn = document.getElementById('reset-btn');
+        const modal = document.getElementById('confirmation-modal');
+        const modalContent = document.getElementById('modal-content');
+        const cancelBtn = document.getElementById('cancel-reset-btn');
+        const confirmBtn = document.getElementById('confirm-reset-btn');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before animating transform
+            setTimeout(() => {
+                modalContent.classList.remove('translate-y-full');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalContent.classList.add('translate-y-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // match transition duration
+        }
+
+        resetBtn.addEventListener('click', openModal);
+        cancelBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Theme Toggle Logic (Visual only for prototype)
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+</body></html>

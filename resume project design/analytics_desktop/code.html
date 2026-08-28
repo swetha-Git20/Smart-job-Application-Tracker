@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartTrack - Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#fcf8ff",
+                        "surface-variant": "#e4e1ee",
+                        "secondary-fixed": "#d3e4fe",
+                        "inverse-primary": "#c3c0ff",
+                        "on-tertiary-fixed": "#351000",
+                        "surface-bright": "#fcf8ff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "primary-fixed": "#e2dfff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "background": "#fcf8ff",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "outline": "#777587",
+                        "primary": "#3525cd",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "on-surface-variant": "#464555",
+                        "tertiary": "#7e3000",
+                        "surface-container": "#f0ecf9",
+                        "on-primary-container": "#dad7ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e4e1ee",
+                        "inverse-on-surface": "#f3effc",
+                        "on-primary": "#ffffff",
+                        "on-background": "#1b1b24",
+                        "secondary": "#505f76",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#eae6f4",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f5f2ff",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#d0e1fb",
+                        "on-secondary-container": "#54647a",
+                        "tertiary-container": "#a44100",
+                        "on-tertiary-container": "#ffd2be",
+                        "inverse-surface": "#302f39",
+                        "surface-dim": "#dcd8e5",
+                        "on-surface": "#1b1b24",
+                        "on-primary-fixed": "#0f0069",
+                        "primary-container": "#4f46e5",
+                        "outline-variant": "#c7c4d8",
+                        "surface-tint": "#4d44e3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "container-padding-mobile": "16px",
+                        "md": "16px",
+                        "container-padding-desktop": "40px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "mono-sm": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "mono-sm": ["13px", { "lineHeight": "20px", "fontWeight": "450" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-sm": ["18px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .chart-bar { transition: height 0.3s ease-out; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 right-0 w-full md:w-[calc(100%-280px)] z-40 bg-background/80 dark:bg-background/80 backdrop-blur-md border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-container-padding-mobile md:px-container-padding-desktop">
+<div class="flex items-center">
+<span class="md:hidden text-headline-sm font-headline-sm font-bold text-primary mr-sm">SmartTrack</span>
+</div>
+<div class="flex items-center space-x-md">
+<!-- Search Placeholder -->
+<div class="relative hidden sm:block focus-within:ring-2 focus-within:ring-primary rounded-md">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-64 bg-surface text-body-sm font-body-sm text-on-background border border-outline-variant rounded-md pl-[32px] pr-sm py-sm focus:outline-none focus:border-primary" placeholder="Search..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</button>
+<button class="bg-primary text-on-primary text-body-sm font-body-sm font-medium px-md py-[6px] rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm ml-sm hidden sm:block">
+                Add Application
+            </button>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col w-[280px] h-screen fixed left-0 top-0 bg-surface border-r border-outline-variant p-md space-y-sm z-50">
+<div class="flex items-center mb-xl px-sm pt-sm">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mr-md">
+<span class="material-symbols-outlined text-primary text-[24px]">trending_up</span>
+</div>
+<div>
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">SmartTrack</h1>
+<p class="text-label-caps font-label-caps text-on-surface-variant">Career Manager</p>
+</div>
+</div>
+<nav class="flex-1 space-y-[4px]">
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-variant transition-colors text-body-sm font-body-sm rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-md text-[20px] group-hover:text-on-background">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-variant transition-colors text-body-sm font-body-sm rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-md text-[20px] group-hover:text-on-background">work</span>
+<span>Applications</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-variant transition-colors text-body-sm font-body-sm rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-md text-[20px] group-hover:text-on-background">event_available</span>
+<span>Interviews</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-variant transition-colors text-body-sm font-body-sm rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-md text-[20px] group-hover:text-on-background">bookmark</span>
+<span>Saved Jobs</span>
+</a>
+<a class="flex items-center px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-medium text-body-sm font-body-sm scale-[0.98] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mr-md text-[20px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-variant transition-colors text-body-sm font-body-sm rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-md text-[20px] group-hover:text-on-background">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t border-outline-variant/50">
+<div class="flex items-center px-sm py-sm">
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small, professional headshot photo of a young professional smiling slightly against a clean, light grey studio background. The lighting is soft and flattering, suitable for a minimalist dashboard UI avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZD8WDYpNZ1bDP2F2q5gkoq62gdeDwMVISZgGGp1yDdB-URyWYJStkjJ2otN_DQsNCL1QHEc_kqB_ZkVLiCsptQBWHwmKxfy7MAnLeCYYBrgZWJvtx64MuYNo-ealVGmA3YRdzoGkfQgNkJ7NbxGkE3GptQXX0oheQdNrB-wKQ18JuMWIBEow-gbKYxU9lcj9IkFICSizAW66pbpuZl-qdr38wDQ_dKAkVYIwPAzRLGFbXCpSPoh-W"/>
+<div class="ml-sm">
+<p class="text-body-sm font-body-sm font-medium text-on-background">Alex Doe</p>
+<p class="text-label-caps font-label-caps text-on-surface-variant lowercase">alex@example.com</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:ml-[280px] pt-[80px] p-container-padding-mobile md:p-container-padding-desktop min-h-screen">
+<header class="mb-xl">
+<h2 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-on-background">Analytics Overview</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-xs">Track your application performance and pipeline health.</p>
+</header>
+<!-- Stat Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-xl">
+<!-- Card 1 -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-sm">
+<p class="text-label-caps font-label-caps text-on-surface-variant">Total Applications</p>
+<div class="flex items-center text-primary bg-primary/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-[2px]">arrow_upward</span>
+<span class="text-label-caps font-label-caps">12%</span>
+</div>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-background">142</h3>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-sm">
+<p class="text-label-caps font-label-caps text-on-surface-variant">Interview Conv %</p>
+<div class="flex items-center text-primary bg-primary/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-[2px]">arrow_upward</span>
+<span class="text-label-caps font-label-caps">4.5%</span>
+</div>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-background">18.5%</h3>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-sm">
+<p class="text-label-caps font-label-caps text-on-surface-variant">Offer Rate %</p>
+<div class="flex items-center text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-[2px]">horizontal_rule</span>
+<span class="text-label-caps font-label-caps">0%</span>
+</div>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-background">4.2%</h3>
+</div>
+</div>
+<!-- Bento Grid Charts -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md mb-xl">
+<!-- Donut Chart: Apps by Status -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] lg:col-span-1 flex flex-col">
+<h3 class="text-body-md font-body-md font-semibold text-on-background mb-lg">Pipeline Status</h3>
+<div class="flex-1 flex items-center justify-center relative min-h-[200px]">
+<!-- CSS Donut Chart approximation -->
+<div class="w-40 h-40 rounded-full flex items-center justify-center relative" style="background: conic-gradient(#4f46e5 0% 60%, #ba1a1a 60% 80%, #d97706 80% 95%, #16a34a 95% 100%);">
+<div class="w-28 h-28 bg-surface rounded-full flex flex-col items-center justify-center shadow-inner z-10 absolute">
+<span class="text-headline-sm font-headline-sm font-bold text-on-background">142</span>
+<span class="text-label-caps font-label-caps text-on-surface-variant">Active</span>
+</div>
+</div>
+</div>
+<div class="mt-lg space-y-sm">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center"><div class="w-3 h-3 rounded-full bg-primary-container mr-sm"></div><span class="text-on-surface-variant">Applied</span></div>
+<span class="font-medium">60%</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center"><div class="w-3 h-3 rounded-full bg-amber-500 mr-sm"></div><span class="text-on-surface-variant">Interview</span></div>
+<span class="font-medium">15%</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center"><div class="w-3 h-3 rounded-full bg-green-600 mr-sm"></div><span class="text-on-surface-variant">Offer</span></div>
+<span class="font-medium">5%</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center"><div class="w-3 h-3 rounded-full bg-error mr-sm"></div><span class="text-on-surface-variant">Rejected</span></div>
+<span class="font-medium">20%</span>
+</div>
+</div>
+</div>
+<!-- Bar Chart: Activity over time -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] lg:col-span-2 flex flex-col">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="text-body-md font-body-md font-semibold text-on-background">Application Volume</h3>
+<select class="bg-surface text-body-sm font-body-sm border-none text-on-surface-variant focus:ring-0 cursor-pointer py-1 pl-2 pr-6">
+<option>Last 6 Weeks</option>
+<option>Last 3 Months</option>
+</select>
+</div>
+<!-- Bar Chart CSS implementation -->
+<div class="flex-1 flex items-end justify-between space-x-2 pt-xl border-b border-outline-variant/30 pb-2 h-[240px]">
+<div class="w-full flex flex-col items-center justify-end h-full group">
+<div class="w-full max-w-[40px] bg-primary/20 rounded-t-sm relative chart-bar h-[30%] group-hover:bg-primary/30 transition-colors">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-label-caps font-label-caps opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded">12</div>
+</div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-2">W1</span>
+</div>
+<div class="w-full flex flex-col items-center justify-end h-full group">
+<div class="w-full max-w-[40px] bg-primary/60 rounded-t-sm relative chart-bar h-[70%] group-hover:bg-primary/70 transition-colors">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-label-caps font-label-caps opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded">28</div>
+</div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-2">W2</span>
+</div>
+<div class="w-full flex flex-col items-center justify-end h-full group">
+<div class="w-full max-w-[40px] bg-primary/40 rounded-t-sm relative chart-bar h-[50%] group-hover:bg-primary/50 transition-colors">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-label-caps font-label-caps opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded">20</div>
+</div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-2">W3</span>
+</div>
+<div class="w-full flex flex-col items-center justify-end h-full group">
+<div class="w-full max-w-[40px] bg-primary rounded-t-sm relative chart-bar h-[90%] group-hover:bg-primary-container transition-colors">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-label-caps font-label-caps opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded">36</div>
+</div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-2">W4</span>
+</div>
+<div class="w-full flex flex-col items-center justify-end h-full group">
+<div class="w-full max-w-[40px] bg-primary/30 rounded-t-sm relative chart-bar h-[40%] group-hover:bg-primary/40 transition-colors">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-label-caps font-label-caps opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded">16</div>
+</div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-2">W5</span>
+</div>
+<div class="w-full flex flex-col items-center justify-end h-full group">
+<div class="w-full max-w-[40px] bg-primary/80 rounded-t-sm relative chart-bar h-[65%] group-hover:bg-primary transition-colors">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-label-caps font-label-caps opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded">26</div>
+</div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-2">W6</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Horizontal Bar: Apps by Job Type -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] mb-xl">
+<h3 class="text-body-md font-body-md font-semibold text-on-background mb-lg">Job Type Distribution</h3>
+<div class="space-y-md">
+<!-- Remote -->
+<div>
+<div class="flex justify-between items-center mb-xs">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Remote</span>
+<span class="text-body-sm font-body-sm font-medium text-on-background">65%</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<!-- Hybrid -->
+<div>
+<div class="flex justify-between items-center mb-xs">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Hybrid</span>
+<span class="text-body-sm font-body-sm font-medium text-on-background">25%</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2">
+<div class="bg-primary/60 h-2 rounded-full" style="width: 25%"></div>
+</div>
+</div>
+<!-- On-site -->
+<div>
+<div class="flex justify-between items-center mb-xs">
+<span class="text-body-sm font-body-sm text-on-surface-variant">On-site</span>
+<span class="text-body-sm font-body-sm font-medium text-on-background">10%</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2">
+<div class="bg-primary/30 h-2 rounded-full" style="width: 10%"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface border-t border-outline-variant shadow-lg flex justify-around items-center h-16 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors flex-1 h-full tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined text-[24px] mb-[2px]">dashboard</span>
+<span class="text-label-caps font-label-caps text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors flex-1 h-full tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined text-[24px] mb-[2px]">work</span>
+<span class="text-label-caps font-label-caps text-[10px]">Apps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors flex-1 h-full tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined text-[24px] mb-[2px]">event_available</span>
+<span class="text-label-caps font-label-caps text-[10px]">Interviews</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-surface-variant/50 flex-1 h-full tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined text-[24px] mb-[2px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-label-caps font-label-caps text-[10px] font-bold">Analytics</span>
+</a>
+</nav>
+</body></html>

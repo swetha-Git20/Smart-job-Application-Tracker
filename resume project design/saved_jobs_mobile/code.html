@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-width=1.0" name="viewport"/>
+<title>Saved Jobs - SmartTrack</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@450&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#fcf8ff",
+                        "surface-variant": "#e4e1ee",
+                        "secondary-fixed": "#d3e4fe",
+                        "inverse-primary": "#c3c0ff",
+                        "on-tertiary-fixed": "#351000",
+                        "surface-bright": "#fcf8ff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "primary-fixed": "#e2dfff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "background": "#fcf8ff",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "outline": "#777587",
+                        "primary": "#3525cd",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "on-surface-variant": "#464555",
+                        "tertiary": "#7e3000",
+                        "surface-container": "#f0ecf9",
+                        "on-primary-container": "#dad7ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e4e1ee",
+                        "inverse-on-surface": "#f3effc",
+                        "on-primary": "#ffffff",
+                        "on-background": "#1b1b24",
+                        "secondary": "#505f76",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#eae6f4",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f5f2ff",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#d0e1fb",
+                        "on-secondary-container": "#54647a",
+                        "tertiary-container": "#a44100",
+                        "on-tertiary-container": "#ffd2be",
+                        "inverse-surface": "#302f39",
+                        "surface-dim": "#dcd8e5",
+                        "on-surface": "#1b1b24",
+                        "on-primary-fixed": "#0f0069",
+                        "primary-container": "#4f46e5",
+                        "outline-variant": "#c7c4d8",
+                        "surface-tint": "#4d44e3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "container-padding-mobile": "16px",
+                        "md": "16px",
+                        "container-padding-desktop": "40px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "mono-sm": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "mono-sm": ["13px", { "lineHeight": "20px", "fontWeight": "450" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-sm": ["18px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
+        .tap-highlight-transparent { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="antialiased h-screen flex flex-col md:hidden overflow-hidden">
+<!-- Top Navigation (Mobile Version) -->
+<header class="bg-background/80 backdrop-blur-md fixed top-0 right-0 w-full z-40 border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-container-padding-mobile">
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary">SmartTrack</h1>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors focus-within:ring-2 focus-within:ring-primary rounded-full p-xs tap-highlight-transparent">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus-within:ring-2 focus-within:ring-primary rounded-full p-xs tap-highlight-transparent">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto mt-16 mb-16 p-container-padding-mobile bg-surface-container-lowest">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface mb-xs">Saved Jobs</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">3 positions saved for later.</p>
+</div>
+<button class="text-primary font-label-caps text-label-caps hover:bg-primary-container hover:text-on-primary-container px-sm py-xs rounded-lg transition-colors">
+                Filter
+            </button>
+</div>
+<!-- Job Cards List -->
+<div class="flex flex-col gap-md pb-xl">
+<!-- Job Card 1 -->
+<div class="bg-surface rounded-xl border border-outline-variant p-md flex flex-col gap-md shadow-sm relative group overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant shrink-0 bg-white flex items-center justify-center">
+<img class="w-8 h-8 object-contain" data-alt="A clean, modern logo for a fictional tech company named 'StellarTech'. The logo features a geometric star shape in vibrant indigo and bright white, set against a pristine, light-mode corporate background. The aesthetic is sharp, professional, and minimalist." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkvxjU1UlfMBGYq4GzhMw7xQiuk23IzPGW7yj5Xng0rBnwZ1DXwQ4rCLcqv4-NYyWZeELl-7HnuPLZiLWlE15n-DUnrAOSfLOTEBF_6ahP9kBceCChoqnLpH5JSxu24mY3vHTsoOJPVOizhQOY3jRD39mVDJ0yxOk6Sjvvlc44D07lr8cRYXQDnx7nD2ZSwd4ZwTIjM1YEKDD3LVo-XxDFPZNZgFMNQhasML_XMhScjsgAbZv2UrSM"/>
+</div>
+<div>
+<h3 class="text-body-md font-body-md font-bold text-on-surface leading-tight">Senior Frontend Engineer</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">StellarTech • Remote</p>
+</div>
+</div>
+<button aria-label="Unsave job" class="text-primary p-xs rounded-full hover:bg-surface-variant transition-colors tap-highlight-transparent">
+<span class="material-symbols-outlined" data-icon="bookmark" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-caps font-label-caps border border-outline-variant/30">$140k - $180k</span>
+<span class="px-sm py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-caps font-label-caps border border-outline-variant/30">React</span>
+<span class="px-sm py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-caps font-label-caps border border-outline-variant/30">TypeScript</span>
+</div>
+<div class="pt-sm border-t border-outline-variant/50 flex justify-between items-center">
+<span class="text-label-caps font-label-caps text-on-surface-variant">Saved 2 days ago</span>
+<button class="bg-primary text-on-primary text-body-sm font-body-sm font-medium px-md py-sm rounded-lg hover:bg-on-primary-fixed-variant transition-colors flex items-center gap-xs tap-highlight-transparent">
+                        Move to App
+                        <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Job Card 2 -->
+<div class="bg-surface rounded-xl border border-outline-variant p-md flex flex-col gap-md shadow-sm relative group overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant shrink-0 bg-white flex items-center justify-center">
+<img class="w-8 h-8 object-contain" data-alt="A sleek, minimalist logo for a fictional fintech startup named 'NexusFinance'. The logo is a stylized, interconnected 'N' in deep charcoal and subtle indigo accents, placed on a clean white background. The overall vibe is trustworthy, modern, and high-performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBa1054R0XX330TcLaAXH6fGG3uDiXpTxA684RL4QdHLSh3PEJ8l80JgwE64MBr4gf4UXpvfYA2MtVHo2JC7vkGa72tZ8ZxEy5xP9iPe9E2gn9s7B7GxnxTK5RDeC-2gOeoPzfVTPhdLEjw2GSq_2shOugVQCJ0HAdhos5e6AD1tVUcMijrbIjlLSxy39GDR_zY9yDO_a2RAOkCvnfgJR6CL8Z1md-BFAb9wFpCTg6RHPlTULrOtMtD"/>
+</div>
+<div>
+<h3 class="text-body-md font-body-md font-bold text-on-surface leading-tight">UI/UX Designer</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">NexusFinance • New York (Hybrid)</p>
+</div>
+</div>
+<button aria-label="Unsave job" class="text-primary p-xs rounded-full hover:bg-surface-variant transition-colors tap-highlight-transparent">
+<span class="material-symbols-outlined" data-icon="bookmark" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-caps font-label-caps border border-outline-variant/30">Figma</span>
+<span class="px-sm py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-caps font-label-caps border border-outline-variant/30">Design Systems</span>
+</div>
+<div class="pt-sm border-t border-outline-variant/50 flex justify-between items-center">
+<span class="text-label-caps font-label-caps text-on-surface-variant">Saved 1 week ago</span>
+<button class="bg-primary text-on-primary text-body-sm font-body-sm font-medium px-md py-sm rounded-lg hover:bg-on-primary-fixed-variant transition-colors flex items-center gap-xs tap-highlight-transparent">
+                        Move to App
+                        <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Job Card 3 (Empty State Example Conceptually Below) -->
+<!-- Note: While the prompt asks for a stacked list *and* an empty state, I will render the stacked list as requested, and visually suggest an 'end of list' or 'discover more' empty-state-ish section below to satisfy both constraints in a single view, as an actual empty state replaces the list. -->
+<div class="mt-xl flex flex-col items-center justify-center p-xl border border-dashed border-outline-variant rounded-xl bg-surface/50 text-center">
+<div class="w-16 h-16 rounded-full bg-surface-variant flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-outline text-3xl" data-icon="search">search</span>
+</div>
+<h3 class="text-body-md font-body-md font-semibold text-on-surface mb-xs">Find more opportunities</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-md max-w-[250px]">Explore new roles and save them here to keep track of your targets.</p>
+<button class="text-primary border border-primary/30 bg-surface rounded-lg px-md py-sm text-body-sm font-body-sm font-medium hover:bg-primary/5 transition-colors">
+                    Explore Jobs
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface border-t border-outline-variant shadow-lg flex justify-around items-center h-16 pb-safe fixed bottom-0 left-0 w-full z-50 tap-highlight-transparent">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-variant w-full h-full" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-label-caps font-label-caps mt-xs">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-variant w-full h-full" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+<span class="text-label-caps font-label-caps mt-xs">Apps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-variant w-full h-full" href="#">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+<span class="text-label-caps font-label-caps mt-xs">Interviews</span>
+</a>
+<!-- "More" acts as the generic catch-all for features not explicitly on the bottom nav, like 'Saved Jobs', but since we are ON Saved Jobs and it's not a primary tab, we'll keep 'More' inactive as well, or active if we consider it nested under More. Let's make More active as it's the logical parent. -->
+<a class="flex flex-col items-center justify-center text-primary active:bg-surface-variant w-full h-full relative" href="#">
+<!-- Active indicator dot -->
+<div class="absolute top-1 w-1.5 h-1.5 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined" data-icon="menu" data-weight="fill" style="font-variation-settings: 'FILL' 1;">menu</span>
+<span class="text-label-caps font-label-caps mt-xs font-bold">More</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CareerStream - Mobile Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f3effc",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "surface-bright": "#fcf8ff",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#302f39",
+                        "primary": "#3525cd",
+                        "surface-variant": "#e4e1ee",
+                        "error": "#ba1a1a",
+                        "primary-container": "#4f46e5",
+                        "outline-variant": "#c7c4d8",
+                        "on-primary-container": "#dad7ff",
+                        "surface": "#fcf8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#a44100",
+                        "surface-tint": "#4d44e3",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "tertiary": "#7e3000",
+                        "on-surface-variant": "#464555",
+                        "error-container": "#ffdad6",
+                        "on-background": "#1b1b24",
+                        "secondary-fixed": "#d3e4fe",
+                        "secondary-container": "#d0e1fb",
+                        "surface-container-low": "#f5f2ff",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1b1b24",
+                        "on-tertiary-container": "#ffd2be",
+                        "surface-container": "#f0ecf9",
+                        "on-tertiary-fixed": "#351000",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "inverse-primary": "#c3c0ff",
+                        "on-primary-fixed": "#0f0069",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "background": "#fcf8ff",
+                        "primary-fixed": "#e2dfff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "surface-dim": "#dcd8e5",
+                        "on-secondary-container": "#54647a",
+                        "tertiary-fixed": "#ffdbcc",
+                        "surface-container-highest": "#e4e1ee",
+                        "surface-container-high": "#eae6f4",
+                        "on-secondary-fixed": "#0b1c30",
+                        "outline": "#777587",
+                        "secondary": "#505f76",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "container-padding-mobile": "16px",
+                        "container-padding-desktop": "40px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "mono-sm": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "mono-sm": ["13px", { "lineHeight": "20px", "fontWeight": "450" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-sm": ["18px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { -webkit-tap-highlight-color: transparent; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-sm text-body-sm antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="md:hidden flex justify-between items-center w-full px-container-padding-mobile h-16 fixed top-0 z-50 bg-surface shadow-sm transition-all duration-300">
+<div class="flex items-center gap-sm">
+<span class="font-headline-sm-mobile text-headline-sm-mobile font-bold text-primary">CareerStream</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dark_mode</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant relative">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A clean, professional headshot of a young professional smiling slightly against a neutral gray background. The lighting is soft and even, highlighting their features. They are wearing a sharp, modern navy blazer over a crisp white shirt. The overall mood is confident and approachable, fitting for a corporate profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE3qlxAyCsy2w_MIv_t8c_-frdnvWtM4aC2Niml8-GNUOTUi3ziQ7V9o_0QLZml-FN02tqx1YipflRmB0UC77e-t-B8WLlRYOr_57z3c6lVl8s4cUNBjT27WyUTHZr8EVZRqfaFfCkp5-r9aq1uGy5KBay2O4bngaBmIKjwIkwoFr-IddwNcwF2Ot9kkpvzkzDQCfc58RCm0zKRQyuBRxp9DJ9RFFffGkiL6HJ2BUBwHAGbM2S9U-9HQ"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full min-h-screen pt-20 pb-24 px-container-padding-mobile flex flex-col gap-xl">
+<!-- Header -->
+<section class="flex flex-col gap-xs pt-sm">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">Overview</h1>
+<p class="text-on-surface-variant font-body-sm text-body-sm">Track your progress and stay organized.</p>
+</section>
+<!-- Stat Cards Stack -->
+<section class="flex flex-col gap-md w-full">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+<div class="flex justify-between items-start w-full">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Total Applications</span>
+<div class="flex items-center gap-xs text-primary bg-primary/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+<span class="font-mono-sm text-mono-sm font-semibold">12%</span>
+</div>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface">142</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+<div class="flex justify-between items-start w-full">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Active Processes</span>
+<div class="flex items-center gap-xs text-on-surface-variant bg-surface-container-high px-2 py-1 rounded-full">
+<span class="font-mono-sm text-mono-sm font-semibold">Steady</span>
+</div>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface">24</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+<div class="flex justify-between items-start w-full">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Upcoming Interviews</span>
+<div class="flex items-center gap-xs text-tertiary bg-tertiary-container/20 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">event</span>
+<span class="font-mono-sm text-mono-sm font-semibold">This Week</span>
+</div>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface">3</div>
+</div>
+</section>
+<!-- Recent Applications -->
+<section class="flex flex-col gap-md w-full">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Recent Applications</h2>
+<button class="text-primary font-body-sm text-body-sm font-medium hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded">View All</button>
+</div>
+<div class="flex flex-col gap-sm w-full">
+<!-- App Item 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex items-center justify-between shadow-[0_1px_4px_-1px_rgba(0,0,0,0.04)] hover:shadow-sm hover:border-outline transition-all duration-200 cursor-pointer active:scale-[0.98]">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center text-primary overflow-hidden border border-outline-variant">
+<img alt="Company Logo" class="w-full h-full object-contain p-1" data-alt="A stylized logo for a modern tech company featuring a vibrant blue geometric shape resembling an origami bird. The background is a clean, bright white. The overall design is minimalist, professional, and scalable, typical of contemporary SaaS branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5jDFSwTpcE0cFW5VSiYvmxgU_vw0QvnjqMWWYtSeDuz_Jrfu30P0NfS76aD68QmMrZGYSak8QWxXh13UZbbUAHc7EIDVCuPhTGwVIPtqSj7T9y2U2HKyDsd9H5Aq3GXIBufIZI_Oo4XU083Nrf_aGaT2_0O_FND-v-BHzKRA-qZbXRARNGA8ic0GXEA9pE-2iTFWWkTwGI5seZXLlBfj5r41goGu1vpysQswP4bZLWKbGGXsxiptDMQ"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface line-clamp-1">Frontend Engineer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Stripe • Remote</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="bg-primary/10 text-primary font-label-caps text-label-caps px-2 py-1 rounded-full">Applied</span>
+<span class="font-mono-sm text-[11px] text-on-surface-variant">2d ago</span>
+</div>
+</div>
+<!-- App Item 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex items-center justify-between shadow-[0_1px_4px_-1px_rgba(0,0,0,0.04)] hover:shadow-sm hover:border-outline transition-all duration-200 cursor-pointer active:scale-[0.98]">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center text-primary overflow-hidden border border-outline-variant">
+<span class="material-symbols-outlined">work</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface line-clamp-1">UX Designer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Figma • NY</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="bg-tertiary/10 text-tertiary font-label-caps text-label-caps px-2 py-1 rounded-full">Screening</span>
+<span class="font-mono-sm text-[11px] text-on-surface-variant">5d ago</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Upcoming Interviews -->
+<section class="flex flex-col gap-md w-full">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Upcoming Interviews</h2>
+<div class="bg-primary-container text-on-primary-container rounded-xl p-md flex flex-col gap-md shadow-sm relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+<div class="flex justify-between items-start relative z-10">
+<div class="flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps opacity-90">Oct 24 • 10:00 AM EST</span>
+<span class="font-headline-sm text-headline-sm font-bold">Technical Round</span>
+<span class="font-body-sm text-body-sm opacity-90">Stripe • 45 mins</span>
+</div>
+<div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">videocam</span>
+</div>
+</div>
+<div class="flex gap-sm mt-sm relative z-10">
+<button class="flex-1 bg-white text-primary font-body-sm text-body-sm font-medium py-2 rounded-lg hover:bg-surface-bright transition-colors text-center active:scale-[0.98]">Join Link</button>
+<button class="w-10 h-10 border border-white/30 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined text-white">more_horiz</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-24 right-4 w-14 h-14 bg-primary text-on-primary rounded-xl shadow-lg flex items-center justify-center hover:bg-primary/90 transition-all active:scale-95 z-40 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-16 z-50 flex justify-around items-center bg-surface px-gutter pb-safe shadow-lg rounded-t-xl transition-all duration-300">
+<!-- Home (Active) -->
+<button class="flex flex-col items-center justify-center text-primary font-bold w-16 h-full focus:outline-none active:bg-surface-container-high transition-all active:scale-110 duration-200 group">
+<div class="px-3 py-1 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors mb-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+</div>
+<span class="font-label-caps text-label-caps">Home</span>
+</button>
+<!-- Apps (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant w-16 h-full focus:outline-none hover:text-on-surface active:bg-surface-container-high transition-all active:scale-110 duration-200 group">
+<div class="px-3 py-1 rounded-full group-hover:bg-surface-container-high transition-colors mb-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">work</span>
+</div>
+<span class="font-label-caps text-label-caps">Apps</span>
+</button>
+<!-- Interviews (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant w-16 h-full focus:outline-none hover:text-on-surface active:bg-surface-container-high transition-all active:scale-110 duration-200 group">
+<div class="px-3 py-1 rounded-full group-hover:bg-surface-container-high transition-colors mb-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">event</span>
+</div>
+<span class="font-label-caps text-label-caps">Interviews</span>
+</button>
+<!-- Saved (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant w-16 h-full focus:outline-none hover:text-on-surface active:bg-surface-container-high transition-all active:scale-110 duration-200 group">
+<div class="px-3 py-1 rounded-full group-hover:bg-surface-container-high transition-colors mb-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark</span>
+</div>
+<span class="font-label-caps text-label-caps">Saved</span>
+</button>
+</nav>
+<script>
+        // Simple dark mode toggle mock
+        const themeToggleBtn = document.querySelector('header button');
+        const themeIcon = themeToggleBtn.querySelector('span');
+        
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                themeIcon.textContent = 'dark_mode';
+            } else {
+                // Since instructions say light mode only, we'll just toggle the icon for effect, 
+                // but not actually change the theme class to adhere strictly to "The page should be in light mode."
+                // In a real app, this would toggle class="dark"
+                themeIcon.textContent = themeIcon.textContent === 'dark_mode' ? 'light_mode' : 'dark_mode';
+            }
+        });
+    </script>
+</body></html>

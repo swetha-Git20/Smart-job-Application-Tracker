@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Saved Jobs - SmartTrack</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fcf8ff",
+                    "surface-variant": "#e4e1ee",
+                    "secondary-fixed": "#d3e4fe",
+                    "inverse-primary": "#c3c0ff",
+                    "on-tertiary-fixed": "#351000",
+                    "surface-bright": "#fcf8ff",
+                    "tertiary-fixed": "#ffdbcc",
+                    "primary-fixed": "#e2dfff",
+                    "on-tertiary-fixed-variant": "#7b2f00",
+                    "background": "#fcf8ff",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#0b1c30",
+                    "outline": "#777587",
+                    "primary": "#3525cd",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "tertiary-fixed-dim": "#ffb695",
+                    "on-surface-variant": "#464555",
+                    "tertiary": "#7e3000",
+                    "surface-container": "#f0ecf9",
+                    "on-primary-container": "#dad7ff",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e4e1ee",
+                    "inverse-on-surface": "#f3effc",
+                    "on-primary": "#ffffff",
+                    "on-background": "#1b1b24",
+                    "secondary": "#505f76",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#eae6f4",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f5f2ff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#d0e1fb",
+                    "on-secondary-container": "#54647a",
+                    "tertiary-container": "#a44100",
+                    "on-tertiary-container": "#ffd2be",
+                    "inverse-surface": "#302f39",
+                    "surface-dim": "#dcd8e5",
+                    "on-surface": "#1b1b24",
+                    "on-primary-fixed": "#0f0069",
+                    "primary-container": "#4f46e5",
+                    "outline-variant": "#c7c4d8",
+                    "surface-tint": "#4d44e3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "container-padding-mobile": "16px",
+                    "md": "16px",
+                    "container-padding-desktop": "40px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "label-caps": [
+                            "Inter"
+                    ],
+                    "mono-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "display-lg-mobile": [
+                            "Inter"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ],
+                    "headline-sm": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "36px",
+                            {
+                                    "lineHeight": "44px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "mono-sm": [
+                            "13px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "450"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "34px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-sm": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen font-sans">
+<!-- Top Navigation Bar -->
+<header class="bg-background/80 dark:bg-background/80 backdrop-blur-md fixed top-0 right-0 w-full md:w-[calc(100%-280px)] z-40 border-b border-outline-variant dark:border-outline shadow-sm flex justify-between items-center h-16 px-container-padding-mobile md:px-container-padding-desktop">
+<div class="flex items-center gap-md">
+<span class="md:hidden text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary">SmartTrack</span>
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-2 border border-outline-variant focus-within:ring-2 focus-within:ring-primary">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant outline-none w-64" placeholder="Search saved jobs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors focus:outline-none">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors focus:outline-none">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<button class="bg-primary text-on-primary rounded-lg px-4 py-2 text-body-sm font-body-sm font-medium hover:opacity-90 transition-opacity ml-4">Add Application</button>
+</div>
+</header>
+<!-- Side Navigation Bar -->
+<nav class="hidden md:flex flex-col w-[280px] h-screen fixed left-0 top-0 border-r border-outline-variant dark:border-outline bg-surface dark:bg-inverse-surface flex flex-col p-md space-y-sm z-50">
+<div class="flex items-center gap-sm px-4 py-6 mb-4">
+<img alt="User Profile" class="w-8 h-8 rounded-full bg-surface-container" data-alt="A small, modern, abstract geometric logo icon representing a career management tool. The icon should feature a stylized upward trending arrow intertwined with a professional briefcase shape. The color palette should be deep indigo primary with subtle lighter blue accents on a clean, light surface background. Crisp, minimal, professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc3ZxQE-M4YT8WjyVGWOGbElXEAGetsKOxTry-JjNkfHYTlTTkTPnLn1t5K-hnAbmvrnH2J9X1tRQQdFcQ5kuoZtYrBZaMJNy8PBzuob9KtQKVbd-pYDNs6RGOB9psXs9Z31UHU1deHmQccJHrj2x4L_asmq8FFGKN1bROF7bTN8f0pACVowh7ScoUT7CrGiqLzcdtyHhr9AwXQKcG5QVkOebaGKDujanDm58M2KZSQvY1xQAJ6KVG"/>
+<div>
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary">SmartTrack</h1>
+<p class="text-label-caps font-label-caps text-on-surface-variant mt-1">Career Manager</p>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+                Applications
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+                Interviews
+            </a>
+<!-- Active Tab: Saved Jobs -->
+<a class="flex items-center gap-4 px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg font-medium text-body-sm font-body-sm scale-[0.98] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+                Saved Jobs
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary rounded-lg py-3 text-body-sm font-body-sm font-medium hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Add Application
+            </button>
+</div>
+</nav>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 border-t border-outline-variant dark:border-outline shadow-lg bg-surface dark:bg-inverse-surface flex justify-around items-center h-16 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant w-1/4 h-full active:bg-surface-variant tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-label-caps font-label-caps mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant w-1/4 h-full active:bg-surface-variant tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+<span class="text-label-caps font-label-caps mt-1">Apps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant w-1/4 h-full active:bg-surface-variant tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+<span class="text-label-caps font-label-caps mt-1">Interviews</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant w-1/4 h-full active:bg-surface-variant tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="text-label-caps font-label-caps mt-1">More</span>
+</a>
+</nav>
+<!-- Main Content -->
+<main class="md:ml-[280px] pt-[88px] p-container-padding-mobile md:p-container-padding-desktop pb-24 md:pb-12 min-h-screen">
+<div class="max-w-7xl mx-auto">
+<header class="mb-xl flex justify-between items-end border-b border-outline-variant pb-md">
+<div>
+<h2 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-on-surface">Saved Jobs</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-2">Manage and review your bookmarked opportunities.</p>
+</div>
+<div class="hidden sm:flex items-center gap-sm">
+<span class="text-label-caps font-label-caps text-on-surface-variant">Sort by:</span>
+<select class="bg-surface border border-outline-variant text-body-sm font-body-sm rounded-md py-1 px-2 focus:ring-primary focus:border-primary">
+<option>Date Saved (Newest)</option>
+<option>Company (A-Z)</option>
+<option>Urgency</option>
+</select>
+</div>
+</header>
+<!-- Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Job Card 1 -->
+<div class="bg-surface rounded-xl border border-outline-variant p-md flex flex-col justify-between hover:shadow-sm transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-fixed/20 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+<div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant">
+<img alt="Company Logo" class="w-6 h-6 object-contain" data-alt="A simple, stylized logo for a tech company named TechFlow. A modern abstract 'T' icon in deep blue and white, minimal and corporate design, suitable for a dark/light mode adaptable UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC2_6zUvACXSOHAE6OGU2FazoPXXqvnJCl_X-OAVEet13Al2pv3VQkQCPG6U3nG452HgpExyPHkkUKma77OW7sGo7_5Gs9uRpfT71KhB1DwscUebRlYPSE-fBf9CKYpfZmbSqOiecdsNda041r8J12L0yG2yrwNV23L_5D51czYxx6WRN40IZ5eHCqm7xPu1bAjq-gUEe3ITQCYpE9Lt5VimEPy_6-hOvDnpYEprna0pypGDfLOl2l"/>
+</div>
+<div>
+<h3 class="text-body-md font-body-md font-semibold text-on-surface">TechFlow</h3>
+</div>
+</div>
+<button aria-label="Unsave job" class="text-primary hover:text-primary-container focus:outline-none">
+<span class="material-symbols-outlined" data-icon="bookmark" data-weight="fill">bookmark</span>
+</button>
+</div>
+<h4 class="text-headline-sm font-headline-sm text-on-background mb-2 relative z-10">Senior Frontend Engineer</h4>
+<div class="flex flex-wrap gap-2 mb-6 relative z-10">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-caps font-label-caps bg-secondary-fixed text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[14px] mr-1">location_on</span> Remote, US
+                            </span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-caps font-label-caps bg-surface-container-high text-on-surface-variant border border-outline-variant">
+<span class="material-symbols-outlined text-[14px] mr-1">schedule</span> Full-time
+                            </span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-outline-variant/50 relative z-10">
+<span class="text-label-caps font-label-caps text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">history</span> Saved 2d ago
+                        </span>
+<button class="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg px-4 py-2 text-body-sm font-body-sm font-medium transition-colors flex items-center gap-2">
+                            Apply Now <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Job Card 2 -->
+<div class="bg-surface rounded-xl border border-outline-variant p-md flex flex-col justify-between hover:shadow-sm transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary-fixed/30 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+<div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant">
+<img alt="Company Logo" class="w-6 h-6 object-contain" data-alt="A clean, minimalist logo for a design agency named CreativeCapsule. A subtle capsule or pill shape in warm coral and off-white colors, highly professional and modern UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy8UCloxY6-50feLIJr2Avc6ofs0DZb-sR7EJSAzPloYup89yjfaB5M5-VTDrbBeOcBDEWP20j-Db6TrchOj9spkaxbMfs5SxqKd2K7XGcveglj01u-kslOm49EqdWGrz_m_o6W8MtLmPU102MobnFz63jLOh-KsXzPXceZe0pv53KH65qrSnldIndDMqqrO7hTDQMJLwkAhmSTUjJdZxdZ6_Ouphr2MT9y6Ob8fnVlmQU_F2-mxS1"/>
+</div>
+<div>
+<h3 class="text-body-md font-body-md font-semibold text-on-surface">CreativeCapsule</h3>
+</div>
+</div>
+<button aria-label="Unsave job" class="text-primary hover:text-primary-container focus:outline-none">
+<span class="material-symbols-outlined" data-icon="bookmark" data-weight="fill">bookmark</span>
+</button>
+</div>
+<h4 class="text-headline-sm font-headline-sm text-on-background mb-2 relative z-10">Product Designer (UI/UX)</h4>
+<div class="flex flex-wrap gap-2 mb-6 relative z-10">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-caps font-label-caps bg-secondary-fixed text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[14px] mr-1">location_city</span> New York, NY
+                            </span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-caps font-label-caps bg-surface-container-high text-on-surface-variant border border-outline-variant">
+<span class="material-symbols-outlined text-[14px] mr-1">computer</span> Hybrid
+                            </span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-outline-variant/50 relative z-10">
+<span class="text-label-caps font-label-caps text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">history</span> Saved 5d ago
+                        </span>
+<button class="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg px-4 py-2 text-body-sm font-body-sm font-medium transition-colors flex items-center gap-2">
+                            Apply Now <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Job Card 3 -->
+<div class="bg-surface rounded-xl border border-outline-variant p-md flex flex-col justify-between hover:shadow-sm transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary-fixed/30 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+<div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant">
+<span class="text-headline-sm font-bold text-on-surface-variant">V</span>
+</div>
+<div>
+<h3 class="text-body-md font-body-md font-semibold text-on-surface">Vanguard Systems</h3>
+</div>
+</div>
+<button aria-label="Unsave job" class="text-primary hover:text-primary-container focus:outline-none">
+<span class="material-symbols-outlined" data-icon="bookmark" data-weight="fill">bookmark</span>
+</button>
+</div>
+<h4 class="text-headline-sm font-headline-sm text-on-background mb-2 relative z-10">Full Stack Developer</h4>
+<div class="flex flex-wrap gap-2 mb-6 relative z-10">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-caps font-label-caps bg-secondary-fixed text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[14px] mr-1">location_on</span> Austin, TX
+                            </span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-caps font-label-caps bg-surface-container-high text-on-surface-variant border border-outline-variant">
+<span class="material-symbols-outlined text-[14px] mr-1">schedule</span> Full-time
+                            </span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-outline-variant/50 relative z-10">
+<span class="text-label-caps font-label-caps text-on-surface-variant flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-[14px]">warning</span> Expiring soon
+                        </span>
+<button class="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg px-4 py-2 text-body-sm font-body-sm font-medium transition-colors flex items-center gap-2">
+                            Apply Now <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Add more cards as needed to fill grid -->
+</div>
+</div>
+</main>
+</body></html>

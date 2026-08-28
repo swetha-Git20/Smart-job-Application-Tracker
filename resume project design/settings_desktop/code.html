@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - SmartTrack</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@450&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#fcf8ff",
+                        "surface-variant": "#e4e1ee",
+                        "secondary-fixed": "#d3e4fe",
+                        "inverse-primary": "#c3c0ff",
+                        "on-tertiary-fixed": "#351000",
+                        "surface-bright": "#fcf8ff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "primary-fixed": "#e2dfff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "background": "#fcf8ff",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "outline": "#777587",
+                        "primary": "#3525cd",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "on-surface-variant": "#464555",
+                        "tertiary": "#7e3000",
+                        "surface-container": "#f0ecf9",
+                        "on-primary-container": "#dad7ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e4e1ee",
+                        "inverse-on-surface": "#f3effc",
+                        "on-primary": "#ffffff",
+                        "on-background": "#1b1b24",
+                        "secondary": "#505f76",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#eae6f4",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f5f2ff",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#d0e1fb",
+                        "on-secondary-container": "#54647a",
+                        "tertiary-container": "#a44100",
+                        "on-tertiary-container": "#ffd2be",
+                        "inverse-surface": "#302f39",
+                        "surface-dim": "#dcd8e5",
+                        "on-surface": "#1b1b24",
+                        "on-primary-fixed": "#0f0069",
+                        "primary-container": "#4f46e5",
+                        "outline-variant": "#c7c4d8",
+                        "surface-tint": "#4d44e3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "container-padding-mobile": "16px",
+                        "md": "16px",
+                        "container-padding-desktop": "40px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "mono-sm": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "mono-sm": ["13px", { "lineHeight": "20px", "fontWeight": "450" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-sm": ["18px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom toggle switch styling */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #3525cd;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3525cd;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen">
+<!-- TopNavBar (Mobile Only) -->
+<header class="md:hidden fixed top-0 right-0 w-full z-40 bg-background/80 dark:bg-background/80 backdrop-blur-md border-b border-outline-variant dark:border-outline shadow-sm flex justify-between items-center h-16 px-container-padding-mobile">
+<div class="text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary">SmartTrack</div>
+<div class="flex items-center space-x-md">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors cursor-pointer" style="font-variation-settings: 'FILL' 0;">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors cursor-pointer" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex flex-col w-[280px] h-screen fixed left-0 top-0 bg-surface dark:bg-inverse-surface border-r border-outline-variant dark:border-outline p-md space-y-sm z-50">
+<div class="px-md py-lg mb-4">
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary">SmartTrack</h1>
+<p class="text-label-caps font-label-caps text-on-surface-variant dark:text-surface-variant mt-1">Career Manager</p>
+</div>
+<div class="flex-grow flex flex-col space-y-sm">
+<a class="flex items-center space-x-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="text-body-sm font-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center space-x-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">work</span>
+<span class="text-body-sm font-body-sm">Applications</span>
+</a>
+<a class="flex items-center space-x-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">event_available</span>
+<span class="text-body-sm font-body-sm">Interviews</span>
+</a>
+<a class="flex items-center space-x-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark</span>
+<span class="text-body-sm font-body-sm">Saved Jobs</span>
+</a>
+<a class="flex items-center space-x-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="text-body-sm font-body-sm">Analytics</span>
+</a>
+<a class="flex items-center space-x-md px-md py-sm bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg font-medium active:scale-[0.98] transition-transform duration-200 group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-body-sm font-body-sm">Settings</span>
+</a>
+</div>
+<div class="mt-auto pt-lg">
+<button class="w-full bg-primary text-on-primary py-sm px-md rounded-lg font-body-sm text-body-sm hover:bg-primary-container transition-colors flex items-center justify-center space-x-sm shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">add</span>
+<span>Add Application</span>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-20 md:pt-lg md:ml-[280px] px-container-padding-mobile md:px-container-padding-desktop pb-24 md:pb-xl max-w-4xl mx-auto min-h-screen">
+<header class="mb-xl hidden md:flex justify-between items-center">
+<div>
+<h2 class="text-display-lg font-display-lg text-on-background">Settings</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-sm">Manage your application preferences and data.</p>
+</div>
+<div class="flex items-center space-x-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" style="font-variation-settings: 'FILL' 0;">notifications</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant shadow-sm cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A close up professional headshot of a young professional in a light, modern corporate office environment. Bright, soft natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3mkKB8N7eTw7DK3zehTUcf-rplp-FNnMk1kE3Ww0JI6l5Jq-vodaVAyD2uCdPs_m6SI4P880ojrO8O1bpdG4EtFU3auv7peQTG27RFtsVx_y2wyIClYfoFtPuAtmeBr-YO_Bqe939nt6E5UT7tWyMeYHJxtMCH29qxhg5mctKyb9CpJYHIixj-VoXVC6DXThb6a54DkD8E4ayjLKX89KGqm-4VZC0s7DwXtPS8roLb3PtPJ18yJYc"/>
+</div>
+</div>
+</header>
+<div class="space-y-xl">
+<!-- Appearance Section -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.04)] p-lg md:p-xl">
+<div class="mb-lg">
+<h3 class="text-headline-md font-headline-md text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">palette</span>
+                        Appearance
+                    </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Customize the look and feel of SmartTrack.</p>
+</div>
+<div class="flex items-center justify-between py-md border-t border-outline-variant border-dashed">
+<div>
+<div class="text-body-md font-body-md font-medium text-on-background">Theme Preference</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-xs">Switch between light and dark mode.</div>
+</div>
+<div class="relative inline-block w-14 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 top-1 left-1 checked:right-1 checked:left-auto" id="theme-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-8 rounded-full bg-surface-variant cursor-pointer transition-colors duration-200 border border-outline-variant" for="theme-toggle"></label>
+</div>
+</div>
+<div class="flex items-center justify-between py-md border-t border-outline-variant border-dashed">
+<div>
+<div class="text-body-md font-body-md font-medium text-on-background">Compact View</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-xs">Reduce padding in tables and lists.</div>
+</div>
+<div class="relative inline-block w-14 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 top-1 left-1 checked:right-1 checked:left-auto" id="compact-toggle" name="toggle2" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-8 rounded-full bg-surface-variant cursor-pointer transition-colors duration-200 border border-outline-variant" for="compact-toggle"></label>
+</div>
+</div>
+</section>
+<!-- Data Management Section -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.04)] p-lg md:p-xl">
+<div class="mb-lg">
+<h3 class="text-headline-md font-headline-md text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">database</span>
+                        Data Management
+                    </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Export your data or permanently delete your account information.</p>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between py-md border-t border-outline-variant border-dashed gap-4">
+<div>
+<div class="text-body-md font-body-md font-medium text-on-background">Export Data</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-xs">Download all your application data as a JSON file.</div>
+</div>
+<button class="bg-transparent border border-outline-variant text-on-background py-sm px-md rounded-lg font-body-sm text-body-sm font-medium hover:bg-surface-variant transition-colors flex items-center justify-center space-x-sm shrink-0">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">download</span>
+<span>Export as JSON</span>
+</button>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between py-md border-t border-error/20 border-dashed gap-4 mt-sm bg-error-container/10 p-md -mx-md rounded-lg">
+<div>
+<div class="text-body-md font-body-md font-medium text-error">Danger Zone</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-xs">Permanently delete all your application tracking data. This cannot be undone.</div>
+</div>
+<button class="bg-error text-on-error py-sm px-md rounded-lg font-body-sm text-body-sm font-medium hover:bg-error/90 transition-colors flex items-center justify-center space-x-sm shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">delete_forever</span>
+<span>Reset All Data</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-lg flex justify-around items-center h-16 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant active:bg-surface-variant tap-highlight-transparent w-full h-full" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="text-label-caps font-label-caps mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant active:bg-surface-variant tap-highlight-transparent w-full h-full" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">work</span>
+<span class="text-label-caps font-label-caps mt-1">Apps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant active:bg-surface-variant tap-highlight-transparent w-full h-full" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">event_available</span>
+<span class="text-label-caps font-label-caps mt-1">Interviews</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary active:bg-surface-variant tap-highlight-transparent w-full h-full" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu</span>
+<span class="text-label-caps font-label-caps mt-1">More</span>
+</a>
+</nav>
+<script>
+        // Simple logic to toggle dark mode class on html tag (for demonstration)
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('change', function() {
+                if(this.checked) {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                } else {
+                    // Normally this would add dark, but prompt specifies light mode page
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                }
+            });
+        }
+    </script>
+</body></html>
