@@ -1,467 +1,400 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InterviewService } from '../../core/services/interview.service';
 import { ApplicationService } from '../../core/services/application.service';
 import { ToastService } from '../../core/services/toast.service';
-import { DialogService } from '../../core/services/dialog.service';
-import { Application, Interview, InterviewMode } from '../../shared/models/application.model';
+import { Interview, Application } from '../../shared/models/application.model';
 
 @Component({
   selector: 'app-interviews',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   template: `
-    <main class="flex-1 p-4 md:p-10 max-w-7xl mx-auto w-full flex flex-col gap-6">
-      <!-- Page Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-on-surface dark:text-[#fcf8ff]">Interview Tracker</h2>
-          <p class="text-sm md:text-base text-on-surface-variant dark:text-gray-400 mt-1">
-            Keep track of scheduled rounds, video links, preparation notes, and interview outcomes.
-          </p>
+    <div class="flex flex-col min-h-screen">
+      <!-- Header -->
+      <header class="h-16 px-4 md:px-10 flex items-center justify-between border-b border-outline-variant bg-surface/80 backdrop-blur-md sticky top-0 z-40">
+        <div class="flex items-center gap-4">
+          <h2 class="text-xl font-semibold text-on-background">Interviews</h2>
         </div>
-
-        <button 
-          (click)="openScheduleModal()"
-          class="px-4 py-2 bg-primary text-on-primary rounded-xl text-sm font-semibold hover:opacity-90 transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95 self-start sm:self-auto">
-          <span class="material-symbols-outlined text-lg">add_circle</span>
-          <span>Schedule Interview</span>
-        </button>
-      </div>
-
-      <!-- Filter Controls Toolbar -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface dark:bg-[#262530] p-4 rounded-2xl border border-outline-variant dark:border-[#3d3b4a] shadow-sm">
-        <!-- Upcoming / Past Tabs -->
-        <div class="flex gap-1.5 bg-surface-container-low dark:bg-[#1f1e28] p-1 rounded-xl border border-outline-variant/60 dark:border-[#3d3b4a] self-start">
+        <div class="flex items-center gap-4">
           <button 
-            (click)="selectedTab = 'upcoming'; filterInterviews()"
-            [ngClass]="selectedTab === 'upcoming' ? 'bg-surface dark:bg-[#2f2e3a] text-primary dark:text-primary-fixed-dim font-bold shadow-xs' : 'text-on-surface-variant dark:text-gray-400'"
-            class="px-4 py-1.5 text-xs font-semibold rounded-lg transition-all">
-            Upcoming ({{ upcomingCount }})
-          </button>
-          <button 
-            (click)="selectedTab = 'past'; filterInterviews()"
-            [ngClass]="selectedTab === 'past' ? 'bg-surface dark:bg-[#2f2e3a] text-primary dark:text-primary-fixed-dim font-bold shadow-xs' : 'text-on-surface-variant dark:text-gray-400'"
-            class="px-4 py-1.5 text-xs font-semibold rounded-lg transition-all">
-            Past ({{ pastCount }})
+            (click)="openAddModal()"
+            class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:opacity-90 shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">add_circle</span>
+            Schedule Interview
           </button>
         </div>
+      </header>
 
-        <!-- Search Input -->
-        <div class="relative w-full sm:w-72">
-          <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-gray-400 text-lg">search</span>
-          <input 
-            [(ngModel)]="searchQuery"
-            (input)="filterInterviews()"
-            placeholder="Search interviews or companies..."
-            class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest dark:bg-[#1f1e28] border border-outline-variant dark:border-[#3d3b4a] rounded-xl text-sm text-on-surface dark:text-[#fcf8ff] placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"/>
-        </div>
-      </div>
-
-      <!-- Bento Grid of Interview Cards -->
-      <div *ngIf="displayedInterviews.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div 
-          *ngFor="let interview of displayedInterviews" 
-          class="bg-surface dark:bg-[#262530] border border-outline-variant dark:border-[#3d3b4a] rounded-2xl p-5 shadow-sm hover:border-primary/50 transition-all flex flex-col justify-between gap-4 group">
-          
-          <!-- Card Header: Company & Round -->
-          <div class="flex items-start justify-between gap-3">
-            <div class="flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-fixed-dim font-bold text-base flex items-center justify-center shrink-0">
-                {{ getCompanyInitials(interview.applicationId) }}
-              </div>
-              <div class="min-w-0">
-                <h3 
-                  (click)="navigateToApplication(interview.applicationId)"
-                  class="font-bold text-base text-on-surface dark:text-[#fcf8ff] group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors cursor-pointer truncate">
-                  {{ getCompanyName(interview.applicationId) }}
-                </h3>
-                <p class="text-xs text-on-surface-variant dark:text-gray-400 truncate">
-                  {{ getRoleName(interview.applicationId) }}
-                </p>
-              </div>
-            </div>
-
-            <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 shrink-0">
-              {{ interview.roundName }}
-            </span>
+      <!-- Page Content -->
+      <div class="p-4 md:p-10 flex-1 flex flex-col gap-8">
+        <!-- Action Bar -->
+        <div class="flex items-center justify-between">
+          <div class="flex gap-2 bg-surface-container p-1 rounded-lg border border-outline-variant/50">
+            <button 
+              (click)="filter = 'upcoming'"
+              [ngClass]="{'bg-surface text-on-surface shadow-sm border border-outline-variant/30': filter === 'upcoming'}"
+              class="px-4 py-1.5 text-sm font-medium rounded transition-colors">
+              Upcoming
+            </button>
+            <button 
+              (click)="filter = 'past'"
+              [ngClass]="{'bg-surface text-on-surface shadow-sm border border-outline-variant/30': filter === 'past'}"
+              class="px-4 py-1.5 text-sm font-medium rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+              Past
+            </button>
           </div>
+        </div>
 
-          <!-- Schedule Metrics Box Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-surface-container-low dark:bg-[#1f1e28] p-3 rounded-xl border border-outline-variant/50 dark:border-[#3d3b4a]">
-            <!-- Date -->
-            <div class="flex flex-col">
-              <span class="text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant/70 dark:text-gray-400 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs">calendar_today</span> Date
-              </span>
-              <span class="text-xs font-semibold text-on-surface dark:text-[#fcf8ff] mt-0.5">
-                {{ formatDate(interview.dateTime) }}
-              </span>
-            </div>
-
-            <!-- Time -->
-            <div class="flex flex-col">
-              <span class="text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant/70 dark:text-gray-400 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs">schedule</span> Time
-              </span>
-              <span class="text-xs font-semibold text-on-surface dark:text-[#fcf8ff] mt-0.5">
-                {{ formatTime(interview.dateTime) }}
-              </span>
-            </div>
-
-            <!-- Mode -->
-            <div class="col-span-2 sm:col-span-1 flex flex-col">
-              <span class="text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant/70 dark:text-gray-400 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs">{{ getModeIcon(interview.mode) }}</span> Format
-              </span>
-              <span class="text-xs font-semibold text-on-surface dark:text-[#fcf8ff] mt-0.5 truncate">
+        <!-- Interview Cards -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div *ngFor="let interview of filteredInterviews" 
+               class="bg-surface border border-outline-variant rounded-xl p-6 flex flex-col gap-4 relative overflow-hidden shadow-sm hover:border-outline transition-colors">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10"></div>
+            
+            <div class="flex justify-between items-start">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center">
+                  <span class="material-symbols-outlined text-secondary">event</span>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-on-surface">{{ getApplicationName(interview.applicationId) }}</h3>
+                  <p class="text-sm text-on-surface-variant">{{ interview.roundName }}</p>
+                </div>
+              </div>
+              <span [ngClass]="getModeClass(interview.mode)" 
+                    class="px-2 py-0.5 rounded-full text-xs uppercase tracking-wider border">
                 {{ interview.mode }}
               </span>
             </div>
-          </div>
 
-          <!-- Notes Snippet (if any) -->
-          <div *ngIf="interview.notes" class="text-xs text-on-surface-variant dark:text-gray-300 bg-surface-container-lowest dark:bg-[#18171f] p-3 rounded-xl border border-outline-variant/40 dark:border-[#3d3b4a] line-clamp-3">
-            <span class="font-semibold text-on-surface dark:text-gray-200">Notes: </span>
-            {{ interview.notes }}
-          </div>
+            <div class="grid grid-cols-3 gap-2 mt-2">
+              <div class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-2 flex flex-col gap-1">
+                <span class="text-xs uppercase tracking-wider text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">calendar_today</span>
+                  Date
+                </span>
+                <span class="text-sm font-medium text-on-surface">{{ formatDate(interview.dateTime) }}</span>
+              </div>
+              <div class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-2 flex flex-col gap-1">
+                <span class="text-xs uppercase tracking-wider text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">schedule</span>
+                  Time
+                </span>
+                <span class="text-sm font-medium text-on-surface">{{ formatTime(interview.dateTime) }}</span>
+              </div>
+              <div class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-2 flex flex-col gap-1">
+                <span class="text-xs uppercase tracking-wider text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">videocam</span>
+                  Format
+                </span>
+                <span class="text-sm font-medium text-on-surface">{{ interview.mode }}</span>
+              </div>
+            </div>
 
-          <!-- Card Actions Footer -->
-          <div class="pt-3 border-t border-outline-variant/50 dark:border-[#3d3b4a] flex items-center justify-between text-xs">
-            <div class="flex items-center gap-2">
-              <a 
-                *ngIf="interview.meetingLink" 
-                [href]="interview.meetingLink" 
-                target="_blank" 
-                class="inline-flex items-center gap-1 text-primary dark:text-primary-fixed-dim font-bold hover:underline">
-                <span class="material-symbols-outlined text-base">videocam</span>
-                <span>Join Call</span>
-              </a>
+            <div class="mt-2 border-t border-outline-variant/50 pt-4 flex items-start gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-sm">sticky_note_2</span>
+              <div class="flex-1">
+                <p class="text-sm text-on-surface-variant line-clamp-2">
+                  {{ interview.notes || 'No notes added yet.' }}
+                </p>
+              </div>
               <button 
-                (click)="navigateToApplication(interview.applicationId)"
-                class="text-on-surface-variant dark:text-gray-400 hover:text-primary hover:underline">
-                View Role
+                (click)="editInterview(interview)"
+                class="text-primary text-sm font-medium hover:underline whitespace-nowrap">
+                Edit
               </button>
             </div>
 
-            <div class="flex items-center gap-1">
+            <div class="flex gap-2 mt-auto pt-2">
               <button 
-                (click)="openEditModal(interview)"
-                class="p-1.5 rounded-lg hover:bg-surface-container-high dark:hover:bg-[#383745] text-on-surface-variant dark:text-gray-400 transition-colors"
-                title="Edit Interview">
-                <span class="material-symbols-outlined text-base">edit</span>
+                (click)="editInterview(interview)"
+                class="flex-1 px-3 py-2 rounded-lg border border-outline-variant text-sm font-medium hover:bg-surface-container-high transition-colors">
+                Edit
               </button>
               <button 
-                (click)="confirmDelete(interview)"
-                class="p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 transition-colors"
-                title="Delete Interview">
-                <span class="material-symbols-outlined text-base">delete</span>
+                (click)="deleteInterview(interview.id)"
+                class="px-3 py-2 rounded-lg border border-outline-variant text-sm font-medium hover:bg-error-container hover:text-on-error-container transition-colors">
+                Delete
               </button>
             </div>
+          </div>
+
+          <div *ngIf="filteredInterviews.length === 0" 
+               class="col-span-full text-center py-12 text-on-surface-variant">
+            <span class="material-symbols-outlined text-4xl mb-2">event_busy</span>
+            <p>No {{ filter }} interviews found.</p>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 border-t border-outline-variant/50 pt-8">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-on-surface-variant mb-1">This Week</p>
+            <p class="text-2xl font-bold text-on-surface">{{ getThisWeekCount() }}</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-on-surface-variant mb-1">Next Week</p>
+            <p class="text-2xl font-bold text-on-surface">{{ getNextWeekCount() }}</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-on-surface-variant mb-1">Completed</p>
+            <p class="text-2xl font-bold text-on-surface">{{ pastInterviews.length }}</p>
           </div>
         </div>
       </div>
 
-      <!-- Empty State -->
-      <div 
-        *ngIf="displayedInterviews.length === 0" 
-        class="bg-surface dark:bg-[#262530] border border-outline-variant dark:border-[#3d3b4a] rounded-2xl p-12 text-center flex flex-col items-center justify-center gap-3">
-        <div class="w-14 h-14 rounded-full bg-surface-container dark:bg-[#383745] flex items-center justify-center text-primary dark:text-primary-fixed-dim">
-          <span class="material-symbols-outlined text-3xl">event_busy</span>
-        </div>
-        <h3 class="text-lg font-bold text-on-surface dark:text-[#fcf8ff]">
-          {{ selectedTab === 'upcoming' ? 'No upcoming interviews' : 'No past interviews recorded' }}
-        </h3>
-        <p class="text-sm text-on-surface-variant dark:text-gray-400 max-w-md">
-          {{ selectedTab === 'upcoming' ? 'You do not have any upcoming interviews scheduled yet. Keep applying!' : 'Past interviews will appear here after the scheduled date and time.' }}
-        </p>
-        <button 
-          (click)="openScheduleModal()"
-          class="mt-2 px-5 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-semibold hover:opacity-90 transition-all">
-          + Schedule An Interview
-        </button>
-      </div>
-
-      <!-- Schedule / Edit Interview Modal -->
-      <div 
-        *ngIf="showModal"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm modal-backdrop">
-        <div class="bg-surface dark:bg-[#262530] border border-outline-variant dark:border-[#3d3b4a] rounded-2xl p-6 max-w-lg w-full shadow-2xl animate-fade-in flex flex-col gap-4">
-          <div class="flex items-center justify-between border-b border-outline-variant/40 dark:border-[#3d3b4a] pb-3">
-            <h3 class="text-lg font-bold text-on-surface dark:text-[#fcf8ff]">
-              {{ isEditModal ? 'Edit Interview' : 'Schedule New Interview' }}
-            </h3>
-            <button (click)="showModal = false" class="p-1 rounded-lg text-on-surface-variant hover:bg-surface-container-high">
-              <span class="material-symbols-outlined text-base">close</span>
-            </button>
-          </div>
-
-          <div class="flex flex-col gap-4">
-            <!-- Linked Application Selector -->
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-semibold text-on-surface dark:text-gray-200">Linked Job Application *</label>
+      <!-- Add/Edit Modal -->
+      <div *ngIf="showModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-surface rounded-xl border border-outline-variant shadow-xl max-w-md w-full p-6">
+          <h2 class="text-xl font-semibold mb-4">{{ isEditMode ? 'Edit Interview' : 'Schedule Interview' }}</h2>
+          <form [formGroup]="interviewForm" class="space-y-4">
+            <div class="space-y-1">
+              <label class="block text-sm font-semibold text-on-surface">Application</label>
               <select 
-                [(ngModel)]="formData.applicationId" 
-                class="w-full bg-surface-container-lowest dark:bg-[#1f1e28] border border-outline-variant dark:border-[#3d3b4a] text-on-surface dark:text-[#fcf8ff] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary">
-                <option value="" disabled>Select an application</option>
-                <option *ngFor="let app of availableApplications" [value]="app.id">
-                  {{ app.company }} — {{ app.role }} ({{ app.status }})
+                formControlName="applicationId"
+                class="w-full appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                <option value="">Select Application</option>
+                <option *ngFor="let app of applications" [value]="app.id">
+                  {{ app.company }} - {{ app.role }}
                 </option>
               </select>
             </div>
 
-            <!-- Round Name -->
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-semibold text-on-surface dark:text-gray-200">Round Title *</label>
+            <div class="space-y-1">
+              <label class="block text-sm font-semibold text-on-surface">Round Name</label>
               <input 
-                [(ngModel)]="formData.roundName" 
-                placeholder="e.g. Technical Round 2, System Design, Hiring Manager"
-                class="w-full bg-surface-container-lowest dark:bg-[#1f1e28] border border-outline-variant dark:border-[#3d3b4a] text-on-surface dark:text-[#fcf8ff] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary"/>
+                formControlName="roundName"
+                class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                placeholder="e.g. Technical Round 1">
             </div>
 
-            <!-- Date/Time & Mode -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div class="flex flex-col gap-1">
-                <label class="text-xs font-semibold text-on-surface dark:text-gray-200">Date & Time *</label>
-                <input 
-                  type="datetime-local" 
-                  [(ngModel)]="formData.dateTime" 
-                  class="w-full bg-surface-container-lowest dark:bg-[#1f1e28] border border-outline-variant dark:border-[#3d3b4a] text-on-surface dark:text-[#fcf8ff] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary"/>
-              </div>
-
-              <div class="flex flex-col gap-1">
-                <label class="text-xs font-semibold text-on-surface dark:text-gray-200">Format / Mode</label>
-                <select 
-                  [(ngModel)]="formData.mode" 
-                  class="w-full bg-surface-container-lowest dark:bg-[#1f1e28] border border-outline-variant dark:border-[#3d3b4a] text-on-surface dark:text-[#fcf8ff] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary">
-                  <option value="Online">Online / Video</option>
-                  <option value="Onsite">On-site</option>
-                  <option value="Phone">Phone Call</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Meeting URL -->
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-semibold text-on-surface dark:text-gray-200">Meeting Link (optional)</label>
+            <div class="space-y-1">
+              <label class="block text-sm font-semibold text-on-surface">Date & Time</label>
               <input 
-                [(ngModel)]="formData.meetingLink" 
-                placeholder="https://meet.google.com/..."
-                class="w-full bg-surface-container-lowest dark:bg-[#1f1e28] border border-outline-variant dark:border-[#3d3b4a] text-on-surface dark:text-[#fcf8ff] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary"/>
+                formControlName="dateTime"
+                type="datetime-local"
+                class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
             </div>
 
-            <!-- Notes -->
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-semibold text-on-surface dark:text-gray-200">Preparation Notes</label>
+            <div class="space-y-1">
+              <label class="block text-sm font-semibold text-on-surface">Mode</label>
+              <select 
+                formControlName="mode"
+                class="w-full appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                <option value="Online">Online</option>
+                <option value="Onsite">Onsite</option>
+                <option value="Phone">Phone</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="block text-sm font-semibold text-on-surface">Notes</label>
               <textarea 
-                [(ngModel)]="formData.notes" 
+                formControlName="notes"
+                class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 resize-y"
                 rows="3"
-                placeholder="Key questions to prepare, interviewer background, architecture topics..."
-                class="w-full bg-surface-container-lowest dark:bg-[#1f1e28] border border-outline-variant dark:border-[#3d3b4a] text-on-surface dark:text-[#fcf8ff] rounded-xl p-2.5 text-sm focus:outline-none focus:border-primary"></textarea>
+                placeholder="Interview details, preparation notes, etc."></textarea>
             </div>
-          </div>
 
-          <div class="flex justify-end gap-2 pt-3 border-t border-outline-variant/40 dark:border-[#3d3b4a]">
-            <button 
-              (click)="showModal = false"
-              class="px-4 py-2 border border-outline-variant dark:border-[#3d3b4a] text-xs font-medium rounded-xl hover:bg-surface-container-high transition-colors">
-              Cancel
-            </button>
-            <button 
-              (click)="saveInterview()"
-              [disabled]="!formData.applicationId || !formData.roundName || !formData.dateTime"
-              class="px-5 py-2 bg-primary text-on-primary text-xs font-semibold rounded-xl hover:opacity-90 transition-all disabled:opacity-50">
-              {{ isEditModal ? 'Update Interview' : 'Schedule Interview' }}
-            </button>
-          </div>
+            <div class="flex justify-end gap-3 pt-4">
+              <button 
+                (click)="closeModal()"
+                type="button"
+                class="px-4 py-2 rounded-lg border border-outline-variant text-on-surface font-medium hover:bg-surface-container-high transition-colors">
+                Cancel
+              </button>
+              <button 
+                (click)="saveInterview()"
+                type="button"
+                [disabled]="interviewForm.invalid"
+                class="px-4 py-2 rounded-lg bg-primary text-on-primary font-medium hover:opacity-90 shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                {{ isEditMode ? 'Update' : 'Schedule' }}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </main>
+    </div>
   `
 })
 export class InterviewsComponent implements OnInit {
-  allInterviews: Interview[] = [];
-  displayedInterviews: Interview[] = [];
-  availableApplications: Application[] = [];
-
-  selectedTab: 'upcoming' | 'past' = 'upcoming';
-  searchQuery: string = '';
-
-  upcomingCount: number = 0;
-  pastCount: number = 0;
-
-  showModal: boolean = false;
-  isEditModal: boolean = false;
-  editingId: string | null = null;
-
-  formData = {
-    applicationId: '',
-    roundName: '',
-    dateTime: '',
-    mode: 'Online' as InterviewMode,
-    meetingLink: '',
-    notes: ''
-  };
+  interviews: Interview[] = [];
+  applications: Application[] = [];
+  upcomingInterviews: Interview[] = [];
+  pastInterviews: Interview[] = [];
+  filteredInterviews: Interview[] = [];
+  filter = 'upcoming';
+  
+  showModal = false;
+  isEditMode = false;
+  editingInterviewId: string | null = null;
+  
+  interviewForm: FormGroup;
 
   constructor(
     private interviewService: InterviewService,
     private applicationService: ApplicationService,
     private toastService: ToastService,
-    private dialogService: DialogService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute,
+    private fb: FormBuilder
+  ) {
+    this.interviewForm = this.fb.group({
+      applicationId: ['', Validators.required],
+      roundName: ['', Validators.required],
+      dateTime: ['', Validators.required],
+      mode: ['Online'],
+      notes: ['']
+    });
+  }
 
   ngOnInit(): void {
-    this.interviewService.interviews$.subscribe(() => {
-      this.loadData();
-    });
-
-    this.applicationService.applications$.subscribe(() => {
-      this.availableApplications = this.applicationService.getActiveApplications();
-    });
-  }
-
-  loadData(): void {
-    this.allInterviews = this.interviewService.interviews;
-    this.upcomingCount = this.interviewService.getUpcomingInterviews().length;
-    this.pastCount = this.interviewService.getPastInterviews().length;
-    this.filterInterviews();
-  }
-
-  filterInterviews(): void {
-    this.displayedInterviews = this.interviewService.filterInterviews(
-      this.allInterviews,
-      this.searchQuery,
-      this.selectedTab
-    );
-  }
-
-  getCompanyName(applicationId: string): string {
-    const app = this.applicationService.getApplicationById(applicationId);
-    return app ? app.company : 'Unknown Company';
-  }
-
-  getRoleName(applicationId: string): string {
-    const app = this.applicationService.getApplicationById(applicationId);
-    return app ? app.role : 'Position';
-  }
-
-  getCompanyInitials(applicationId: string): string {
-    const app = this.applicationService.getApplicationById(applicationId);
-    return app && app.company ? app.company.charAt(0).toUpperCase() : 'I';
-  }
-
-  getModeIcon(mode: InterviewMode): string {
-    switch (mode) {
-      case 'Phone':
-        return 'phone';
-      case 'Onsite':
-        return 'apartment';
-      case 'Online':
-      default:
-        return 'videocam';
-    }
-  }
-
-  formatDate(date: string | Date): string {
-    if (!date) return '';
-    return new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-  }
-
-  formatTime(date: string | Date): string {
-    if (!date) return '';
-    return new Date(date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-  }
-
-  openScheduleModal(): void {
-    this.isEditModal = false;
-    this.editingId = null;
-    const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    tomorrow.setHours(10, 0, 0, 0);
-
-    const defaultAppId = this.availableApplications.length > 0 ? this.availableApplications[0].id : '';
-
-    this.formData = {
-      applicationId: defaultAppId,
-      roundName: '',
-      dateTime: tomorrow.toISOString().slice(0, 16),
-      mode: 'Online',
-      meetingLink: '',
-      notes: ''
-    };
-    this.showModal = true;
-  }
-
-  openEditModal(interview: Interview): void {
-    this.isEditModal = true;
-    this.editingId = interview.id;
-    let dtStr = '';
-    try {
-      dtStr = new Date(interview.dateTime).toISOString().slice(0, 16);
-    } catch {
-      dtStr = '';
-    }
-
-    this.formData = {
-      applicationId: interview.applicationId,
-      roundName: interview.roundName,
-      dateTime: dtStr,
-      mode: interview.mode,
-      meetingLink: interview.meetingLink || '',
-      notes: interview.notes || ''
-    };
-    this.showModal = true;
-  }
-
-  saveInterview(): void {
-    if (!this.formData.applicationId || !this.formData.roundName || !this.formData.dateTime) {
-      this.toastService.error('Please complete all required fields.');
-      return;
-    }
-
-    if (this.isEditModal && this.editingId) {
-      this.interviewService.updateInterview(this.editingId, {
-        applicationId: this.formData.applicationId,
-        roundName: this.formData.roundName,
-        dateTime: new Date(this.formData.dateTime).toISOString(),
-        mode: this.formData.mode,
-        meetingLink: this.formData.meetingLink,
-        notes: this.formData.notes
-      });
-      this.toastService.success('Interview updated successfully');
-    } else {
-      this.interviewService.createInterview({
-        applicationId: this.formData.applicationId,
-        roundName: this.formData.roundName,
-        dateTime: new Date(this.formData.dateTime).toISOString(),
-        mode: this.formData.mode,
-        meetingLink: this.formData.meetingLink,
-        notes: this.formData.notes
-      });
-      this.toastService.success('Interview scheduled successfully');
-    }
-
-    this.showModal = false;
-  }
-
-  confirmDelete(interview: Interview): void {
-    this.dialogService.confirm({
-      title: 'Delete Interview',
-      message: `Are you sure you want to delete "${interview.roundName}" for ${this.getCompanyName(interview.applicationId)}?`,
-      confirmText: 'Delete',
-      isDestructive: true,
-      onConfirm: () => {
-        this.interviewService.deleteInterview(interview.id);
-        this.toastService.success('Interview deleted');
+    this.loadData();
+    
+    // Check if applicationId is passed in query params
+    this.route.queryParams.subscribe(params => {
+      if (params['applicationId']) {
+        this.interviewForm.patchValue({ applicationId: params['applicationId'] });
+        this.openAddModal();
       }
     });
   }
 
-  navigateToApplication(applicationId: string): void {
-    if (applicationId) {
-      this.router.navigate(['/applications', applicationId]);
+  loadData(): void {
+    this.interviewService.interviews$.subscribe((interviews: Interview[]) => {
+      this.interviews = interviews;
+      this.upcomingInterviews = this.interviewService.getUpcomingInterviews();
+      this.pastInterviews = this.interviewService.getPastInterviews();
+      this.applyFilter();
+    });
+
+    this.applicationService.applications$.subscribe((apps: Application[]) => {
+      this.applications = apps;
+    });
+  }
+
+  applyFilter(): void {
+    this.filteredInterviews = this.filter === 'upcoming' ? this.upcomingInterviews : this.pastInterviews;
+  }
+
+  openAddModal(): void {
+    this.isEditMode = false;
+    this.editingInterviewId = null;
+    this.interviewForm.reset({
+      applicationId: '',
+      roundName: '',
+      dateTime: '',
+      mode: 'Online',
+      notes: ''
+    });
+    this.showModal = true;
+  }
+
+  editInterview(interview: Interview): void {
+    this.isEditMode = true;
+    this.editingInterviewId = interview.id;
+    this.interviewForm.patchValue({
+      applicationId: interview.applicationId,
+      roundName: interview.roundName,
+      dateTime: new Date(interview.dateTime).toISOString().slice(0, 16),
+      mode: interview.mode,
+      notes: interview.notes
+    });
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.interviewForm.reset();
+  }
+
+  saveInterview(): void {
+    if (this.interviewForm.invalid) return;
+
+    const formValue = this.interviewForm.value;
+    
+    if (this.isEditMode && this.editingInterviewId) {
+      this.interviewService.updateInterview(this.editingInterviewId, {
+        ...formValue,
+        dateTime: new Date(formValue.dateTime)
+      });
+      this.toastService.success('Interview updated successfully');
+    } else {
+      this.interviewService.createInterview({
+        ...formValue,
+        dateTime: new Date(formValue.dateTime)
+      });
+      this.toastService.success('Interview scheduled successfully');
     }
+
+    this.closeModal();
+  }
+
+  deleteInterview(id: string): void {
+    if (confirm('Are you sure you want to delete this interview?')) {
+      this.interviewService.deleteInterview(id);
+      this.toastService.success('Interview deleted successfully');
+    }
+  }
+
+  getApplicationName(applicationId: string): string {
+    const app = this.applications.find((a: Application) => a.id === applicationId);
+    return app ? `${app.company} - ${app.role}` : 'Unknown Application';
+  }
+
+  getModeClass(mode: string): string {
+    switch (mode) {
+      case 'Online': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'Onsite': return 'bg-green-100 text-green-800 border-green-200';
+      case 'Phone': return 'bg-purple-100 text-purple-800 border-purple-200';
+      default: return 'bg-surface-container text-on-surface-variant border-outline-variant';
+    }
+  }
+
+  formatDate(date: Date | string): string {
+    const d = new Date(date);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  formatTime(date: Date | string): string {
+    const d = new Date(date);
+    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  getThisWeekCount(): number {
+    const now = new Date();
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - now.getDay());
+    weekStart.setHours(0, 0, 0, 0);
+    
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    weekEnd.setHours(23, 59, 59, 999);
+
+    return this.upcomingInterviews.filter((int: Interview) => {
+      const d = new Date(int.dateTime);
+      return d >= weekStart && d <= weekEnd;
+    }).length;
+  }
+
+  getNextWeekCount(): number {
+    const now = new Date();
+    const thisWeekStart = new Date(now);
+    thisWeekStart.setDate(now.getDate() - now.getDay());
+    
+    const nextWeekStart = new Date(thisWeekStart);
+    nextWeekStart.setDate(thisWeekStart.getDate() + 7);
+    
+    const nextWeekEnd = new Date(nextWeekStart);
+    nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+    nextWeekEnd.setHours(23, 59, 59, 999);
+
+    return this.upcomingInterviews.filter((int: Interview) => {
+      const d = new Date(int.dateTime);
+      return d >= nextWeekStart && d <= nextWeekEnd;
+    }).length;
   }
 }

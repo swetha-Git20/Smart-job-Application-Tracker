@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { MobileNavComponent } from './shared/components/mobile-nav/mobile-nav.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
-import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -12,26 +11,38 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
     RouterOutlet,
     SidebarComponent,
     MobileNavComponent,
-    ToastComponent,
-    ConfirmDialogComponent
+    ToastComponent
   ],
   template: `
-    <div class="bg-background dark:bg-[#1b1b24] text-on-background dark:text-[#fcf8ff] min-h-screen flex flex-col font-sans transition-colors duration-300">
+    <div class="bg-background text-on-background font-sans antialiased h-screen flex overflow-hidden">
       <!-- Desktop Sidebar -->
       <app-sidebar></app-sidebar>
-
-      <!-- Mobile Top & Bottom Navigation + FAB -->
-      <app-mobile-nav></app-mobile-nav>
-
-      <!-- Main Router View Area -->
-      <div class="flex-1 md:ml-[280px] min-h-screen pt-14 md:pt-0 pb-20 md:pb-0 flex flex-col">
-        <router-outlet></router-outlet>
+      
+      <!-- Main Content Area -->
+      <div class="flex-1 flex flex-col h-full overflow-hidden">
+        <!-- Mobile Navigation -->
+        <app-mobile-nav></app-mobile-nav>
+        
+        <!-- Router Outlet for Page Content -->
+        <div class="flex-1 md:ml-[280px] h-full overflow-y-auto">
+          <router-outlet></router-outlet>
+        </div>
+        
+        <!-- Toast Notifications -->
+        <app-toast></app-toast>
       </div>
-
-      <!-- Global Floating Components -->
-      <app-toast></app-toast>
-      <app-confirm-dialog></app-confirm-dialog>
     </div>
   `
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  ngOnInit(): void {
+    // Remove loading screen when Angular app initializes
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      loadingScreen.style.opacity = '0';
+      setTimeout(() => {
+        loadingScreen.remove();
+      }, 300);
+    }
+  }
+}

@@ -3,188 +3,140 @@ import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../core/services/theme.service';
 import { StorageService } from '../../core/services/storage.service';
 import { ToastService } from '../../core/services/toast.service';
-import { DialogService } from '../../core/services/dialog.service';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <main class="flex-1 p-4 md:p-10 max-w-4xl mx-auto w-full flex flex-col gap-6">
-      <!-- Page Header -->
-      <header>
-        <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-on-surface dark:text-[#fcf8ff]">Settings</h2>
-        <p class="text-sm md:text-base text-on-surface-variant dark:text-gray-400 mt-1">
-          Manage your application preferences, appearance, and local storage data.
-        </p>
+    <div class="p-4 md:p-10 max-w-4xl mx-auto min-h-screen">
+      <header class="mb-8 hidden md:flex justify-between items-center">
+        <div>
+          <h2 class="text-3xl font-bold text-on-background">Settings</h2>
+          <p class="text-base text-on-surface-variant mt-2">Manage your application preferences and data.</p>
+        </div>
       </header>
 
-      <div class="flex flex-col gap-6">
+      <div class="space-y-8">
         <!-- Appearance Section -->
-        <section class="bg-surface dark:bg-[#262530] border border-outline-variant dark:border-[#3d3b4a] rounded-2xl p-6 shadow-sm flex flex-col gap-6">
-          <div class="flex items-center gap-3 pb-3 border-b border-outline-variant/40 dark:border-[#3d3b4a]">
-            <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary dark:text-primary-fixed-dim flex items-center justify-center">
-              <span class="material-symbols-outlined text-xl">palette</span>
-            </div>
-            <div>
-              <h3 class="text-base font-bold text-on-surface dark:text-[#fcf8ff]">Appearance</h3>
-              <p class="text-xs text-on-surface-variant dark:text-gray-400">Customize the visual theme and layout density</p>
-            </div>
+        <section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-6 md:p-8">
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-on-background flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">palette</span>
+              Appearance
+            </h3>
+            <p class="text-sm text-on-surface-variant mt-1">Customize the look and feel of CareerStream.</p>
           </div>
-
-          <!-- Theme Preference Toggle -->
-          <div class="flex items-center justify-between py-2">
+          
+          <div class="flex items-center justify-between py-4 border-t border-outline-variant border-dashed">
             <div>
-              <h4 class="text-sm font-semibold text-on-surface dark:text-[#fcf8ff]">Dark Theme Mode</h4>
-              <p class="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">Switch between sleek dark mode and light theme</p>
+              <div class="text-base font-medium text-on-background">Theme Preference</div>
+              <div class="text-sm text-on-surface-variant mt-1">Switch between light and dark mode.</div>
             </div>
-            <button 
-              (click)="toggleTheme()"
-              [ngClass]="themeService.isDarkMode ? 'bg-primary' : 'bg-surface-container-high dark:bg-[#383745]'"
-              class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none shadow-xs">
-              <span 
-                [ngClass]="themeService.isDarkMode ? 'translate-x-5 bg-white' : 'translate-x-0 bg-white'"
-                class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out"></span>
-            </button>
-          </div>
-
-          <!-- Compact View Toggle -->
-          <div class="flex items-center justify-between py-2 border-t border-outline-variant/40 dark:border-[#3d3b4a]">
-            <div>
-              <h4 class="text-sm font-semibold text-on-surface dark:text-[#fcf8ff]">Compact View Density</h4>
-              <p class="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">Optimize list spacing for dense information display</p>
-            </div>
-            <button 
-              (click)="toggleCompactView()"
-              [ngClass]="isCompact ? 'bg-primary' : 'bg-surface-container-high dark:bg-[#383745]'"
-              class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none shadow-xs">
-              <span 
-                [ngClass]="isCompact ? 'translate-x-5 bg-white' : 'translate-x-0 bg-white'"
-                class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out"></span>
-            </button>
-          </div>
-        </section>
-
-        <!-- User Profile Card -->
-        <section class="bg-surface dark:bg-[#262530] border border-outline-variant dark:border-[#3d3b4a] rounded-2xl p-6 shadow-sm flex flex-col gap-4">
-          <div class="flex items-center gap-3 pb-3 border-b border-outline-variant/40 dark:border-[#3d3b4a]">
-            <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary dark:text-primary-fixed-dim flex items-center justify-center">
-              <span class="material-symbols-outlined text-xl">person</span>
-            </div>
-            <div>
-              <h3 class="text-base font-bold text-on-surface dark:text-[#fcf8ff]">Profile & Account</h3>
-              <p class="text-xs text-on-surface-variant dark:text-gray-400">Local demo account credentials</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container font-extrabold text-lg flex items-center justify-center shadow-xs">
-              AD
-            </div>
-            <div>
-              <h4 class="text-sm font-bold text-on-surface dark:text-[#fcf8ff]">Alex Doe</h4>
-              <p class="text-xs text-on-surface-variant dark:text-gray-400">alex&#64;example.com &bull; <span class="text-primary dark:text-primary-fixed-dim font-semibold">Pro License</span></p>
+            <div class="relative inline-block w-14 align-middle select-none transition duration-200 ease-in">
+              <input 
+                [checked]="isDarkMode"
+                (change)="toggleTheme()"
+                type="checkbox"
+                class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 top-1 left-1 checked:right-1 checked:left-auto transition-all"
+                id="theme-toggle"/>
+              <label 
+                for="theme-toggle"
+                class="toggle-label block overflow-hidden h-8 rounded-full bg-surface-variant cursor-pointer transition-colors duration-200 border border-outline-variant"
+                [ngClass]="{ 'bg-primary': isDarkMode }"></label>
             </div>
           </div>
         </section>
 
         <!-- Data Management Section -->
-        <section class="bg-surface dark:bg-[#262530] border border-outline-variant dark:border-[#3d3b4a] rounded-2xl p-6 shadow-sm flex flex-col gap-6">
-          <div class="flex items-center gap-3 pb-3 border-b border-outline-variant/40 dark:border-[#3d3b4a]">
-            <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary dark:text-primary-fixed-dim flex items-center justify-center">
-              <span class="material-symbols-outlined text-xl">database</span>
-            </div>
-            <div>
-              <h3 class="text-base font-bold text-on-surface dark:text-[#fcf8ff]">Data Management</h3>
-              <p class="text-xs text-on-surface-variant dark:text-gray-400">Backup, export, or reset all stored application tracking records</p>
-            </div>
+        <section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-6 md:p-8">
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-on-background flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">database</span>
+              Data Management
+            </h3>
+            <p class="text-sm text-on-surface-variant mt-1">Export your data or permanently delete your account information.</p>
           </div>
-
-          <!-- Export Data Action -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2">
+          
+          <div class="flex flex-col md:flex-row md:items-center justify-between py-4 border-t border-outline-variant border-dashed gap-4">
             <div>
-              <h4 class="text-sm font-semibold text-on-surface dark:text-[#fcf8ff]">Export Data as JSON</h4>
-              <p class="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">Download a real JSON backup containing all your tracked jobs and interviews</p>
+              <div class="text-base font-medium text-on-background">Export Data</div>
+              <div class="text-sm text-on-surface-variant mt-1">Download all your application data as a JSON file.</div>
             </div>
             <button 
               (click)="exportData()"
-              class="px-4 py-2 bg-surface-container-high dark:bg-[#383745] hover:bg-primary hover:text-white text-on-surface dark:text-[#fcf8ff] rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0 shadow-xs active:scale-95">
-              <span class="material-symbols-outlined text-base">download</span>
-              <span>Export as JSON</span>
+              class="bg-transparent border border-outline-variant text-on-background py-2 px-4 rounded-lg text-sm font-medium hover:bg-surface-variant transition-colors flex items-center justify-center gap-2 shrink-0">
+              <span class="material-symbols-outlined text-lg">download</span>
+              Export as JSON
             </button>
           </div>
-
-          <!-- Danger Zone: Reset All Data -->
-          <div class="p-4 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
+          
+          <div class="flex flex-col md:flex-row md:items-center justify-between py-4 border-t border-error/20 border-dashed gap-4 mt-4 bg-error-container/10 p-4 -mx-4 md:-mx-6 rounded-lg">
             <div>
-              <h4 class="text-sm font-bold text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-base">warning</span>
-                <span>Danger Zone — Reset All Data</span>
-              </h4>
-              <p class="text-xs text-rose-900/70 dark:text-rose-300/80 mt-0.5">
-                Clear all custom changes and restore clean starter sample applications and scheduled interviews.
-              </p>
+              <div class="text-base font-medium text-error">Danger Zone</div>
+              <div class="text-sm text-on-surface-variant mt-1">Permanently delete all your application tracking data. This cannot be undone.</div>
             </div>
             <button 
-              (click)="confirmResetAllData()"
-              class="px-4 py-2 bg-rose-600 text-white rounded-xl text-xs font-bold hover:bg-rose-700 transition-all flex items-center justify-center gap-1.5 shrink-0 shadow-xs cursor-pointer active:scale-95">
-              <span class="material-symbols-outlined text-base">restart_alt</span>
-              <span>Reset All Data</span>
+              (click)="resetAllData()"
+              class="bg-error text-on-error py-2 px-4 rounded-lg text-sm font-medium hover:bg-error/90 transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm">
+              <span class="material-symbols-outlined text-lg">delete_forever</span>
+              Reset All Data
             </button>
           </div>
         </section>
       </div>
-    </main>
-  `
+    </div>
+  `,
+  styles: [`
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #3525cd;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #3525cd;
+    }
+    .toggle-checkbox:checked + .toggle-label:after {
+      transform: translateX(100%);
+      border-color: white;
+    }
+  `]
 })
 export class SettingsComponent implements OnInit {
-  isCompact: boolean = false;
+  isDarkMode = false;
 
   constructor(
-    public themeService: ThemeService,
+    private themeService: ThemeService,
     private storageService: StorageService,
-    private toastService: ToastService,
-    private dialogService: DialogService
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
-    this.storageService.compactView$.subscribe(val => {
-      this.isCompact = val;
+    this.themeService.theme$.subscribe((theme: string) => {
+      this.isDarkMode = theme === 'dark';
     });
   }
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
-    this.toastService.success(`Switched to ${this.themeService.theme} mode`);
-  }
-
-  toggleCompactView(): void {
-    this.storageService.setCompactView(!this.isCompact);
-    this.toastService.info(`Compact view ${!this.isCompact ? 'enabled' : 'disabled'}`);
+    this.toastService.success(`Switched to ${this.isDarkMode ? 'light' : 'dark'} mode`);
   }
 
   exportData(): void {
-    const jsonStr = this.storageService.exportData();
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
+    const data = this.storageService.exportData();
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `careerstream_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.download = 'careerstream-export.json';
     a.click();
-    window.URL.revokeObjectURL(url);
-    this.toastService.success('Data exported successfully!');
+    URL.revokeObjectURL(url);
+    this.toastService.success('Data exported successfully');
   }
 
-  confirmResetAllData(): void {
-    this.dialogService.confirm({
-      title: 'Reset All Data?',
-      message: 'This will reset all applications, interviews, and settings back to the default portfolio starter data. Do you wish to proceed?',
-      confirmText: 'Reset Everything',
-      isDestructive: true,
-      onConfirm: () => {
-        this.storageService.resetAllData();
-        this.toastService.success('All data has been reset to default starter state');
-      }
-    });
+  resetAllData(): void {
+    if (confirm('Are you sure you want to delete all your data? This action cannot be undone.')) {
+      this.storageService.resetAllData();
+      this.toastService.success('All data has been reset');
+    }
   }
 }

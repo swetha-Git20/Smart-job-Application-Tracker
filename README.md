@@ -1,142 +1,216 @@
-# CareerStream — Smart Job Application Tracker
+# Smart Job Application Tracker
 
-A modern, responsive, full-featured **Job Application Tracker** built with **Angular (Standalone Components) + TypeScript + HTML/CSS & Tailwind CSS**, faithfully matching the Stitch UI SaaS design system.
+A complete Angular portfolio project for tracking job applications, interviews, and career progress. Built with modern Angular standalone components, TypeScript, and localStorage for data persistence.
 
----
+## Features
 
-## ⚡ Quick Start (One-Click Run)
+### Core Functionality
+- **Application Management**: Create, edit, delete, and track job applications with full CRUD operations
+- **Interview Scheduling**: Schedule and manage interviews linked to specific applications
+- **Status Tracking**: Track application status (Applied, Interview, Offer, Rejected) with timeline history
+- **Search & Filtering**: Real-time search by company/role with status and job type filters
+- **Sorting**: Sort applications by date, company name, or recency
+- **Bookmarking**: Save interesting job opportunities for later review
+- **Analytics Dashboard**: Visual charts showing application pipeline health and performance metrics
+- **Data Export**: Export all data as JSON for backup
+- **Theme Switching**: Dark/light mode with persistent preferences
+- **Responsive Design**: Fully responsive for desktop (1440px+) and mobile (375px+)
 
-### 🖱️ Windows One-Click Starter
-Simply double-click **`start.bat`** (or **`run.bat`**) in the project folder:
-1. It automatically checks and installs any missing dependencies (`npm install`).
-2. It starts the Angular development server on `http://localhost:4200/`.
-3. It opens the app directly in **Full Screen Mode** in your browser.
-*(Tip: Press `F11` anytime to toggle full screen mode on or off).*
+### Pages
+1. **Dashboard** - Overview with stat cards, recent applications, and upcoming interviews
+2. **Applications** - Full application list with search, filters, and management
+3. **Application Detail** - Detailed view with status timeline, notes, and linked interviews
+4. **Application Form** - Add/edit applications with validation
+5. **Interview Tracker** - Manage interviews with scheduling and filtering
+6. **Saved Jobs** - Bookmark and review saved opportunities
+7. **Analytics** - Visual analytics with charts and performance metrics
+8. **Settings** - Theme toggle, data export, and reset functionality
 
----
+## Technology Stack
 
-## 🌟 Features & Pages
-
-### 1. 📊 Interactive Dashboard (`/dashboard`)
-- **KPI Stat Cards**: Real-time count of Total Applications, Scheduled Interviews, Offers, and Rejections.
-- **Recent Applications**: Displays recent job entries with color-coded status badges and quick navigation to detail views.
-- **Upcoming Interviews Widget**: Quick-glance calendar box with dates, times, format (Online/Onsite/Phone), and meeting links.
-- **Export Report**: Instant JSON report export button.
-
-### 2. 💼 Applications Pipeline (`/applications`)
-- **Full CRUD Support**: Add, view, edit, and delete applications with instant state synchronization.
-- **Live Search**: Instant real-time filtering across Company Name, Role, Location, and Notes.
-- **Filter by Status & Work Model**: Filter by `Applied`, `Interview`, `Offer`, `Rejected` and `Remote`, `Hybrid`, `Onsite`.
-- **Sorting**: Sort by Newest First, Oldest First, Company A-Z, or Company Z-A.
-- **View Toggle**: Switch between **Table View** and **Responsive Card Grid View**.
-- **Quick Status Changer & Bookmarking**: Update status or save to bookmarks directly from the list.
-
-### 3. 📝 Application Add & Edit Forms (`/applications/new` & `/applications/:id/edit`)
-- **Reactive Forms (`FormGroup`)**: Enforces required fields, proper URL validation for job posting links, and salary formatting.
-- Clean structured sections for Position details, Logistics, and Preparation Notes.
-
-### 4. 🔍 Application Detail & Status Timeline (`/applications/:id`)
-- **Position Overview**: Work model, location, applied date, salary range, and direct link to job posting.
-- **Interactive Chronological Status Timeline**: Displays history of status changes with timestamps.
-- **Notes & Context**: Full notes viewer with inline editing and saving.
-- **Linked Interviews**: View and schedule interview rounds tied directly to this position.
-
-### 5. 📅 Interview Tracker (`/interviews`)
-- **Bento Grid Cards**: Round details, Date, Time, Format badges (Online/Onsite/Phone), notes, and direct **Join Meeting** call links.
-- **Upcoming vs. Past Tabs**: Easily filter between upcoming and past interviews.
-- **Schedule Interview Modal**: Form to schedule new rounds with parent application selector.
-
-### 6. ⭐ Saved Jobs & Opportunities (`/saved`)
-- Bookmarked jobs board for positions to research or apply to later.
-- **"Move to Active Applications"**: Converts a saved job into the active pipeline with a single click and toast notification.
-
-### 7. 📈 Live Pipeline Analytics (`/analytics`)
-- **Computed Metrics**: Total Applications, Interview Conversion Rate %, and Offer Rate %.
-- **Status Funnel Donut Chart**: Dynamic SVG/conic visual breakdown by stage.
-- **Monthly Volume Bar Chart**: Applications submitted per month over time.
-- **Work Model Distribution**: Breakdown of Remote vs. Hybrid vs. On-site positions.
-
-### 8. ⚙️ Settings & Data Management (`/settings`)
-- **Dark / Light Mode Toggle**: Smooth theme transition persisted app-wide in `localStorage`.
-- **Compact View Mode**: Adjusts padding for dense information displays.
-- **Export Data as JSON**: Downloads a complete backup `.json` file of all saved applications and interviews.
-- **Reset All Data**: Restores clean starter sample data with a confirmation modal.
-
----
-
-## 🛠️ Tech Stack
-
-- **Framework**: Angular (Latest stable, 100% Standalone Components)
+- **Framework**: Angular 20.3.30 (Standalone Components)
 - **Language**: TypeScript
-- **Routing**: Angular Router (`app.routes.ts`)
-- **Forms**: Angular Reactive Forms (`FormBuilder`, `Validators`, `ReactiveFormsModule`)
-- **State Management**: Angular Services with RxJS `BehaviorSubject` reactive streams (`StorageService`, `ApplicationService`, `InterviewService`, `ThemeService`, `ToastService`, `DialogService`)
-- **Styling**: Tailwind CSS + Custom SCSS variables and animations
-- **Data Persistence**: `localStorage` (no external backend or DB required)
+- **Styling**: SCSS/CSS with Material Design patterns
+- **Routing**: Angular Router
+- **Forms**: Reactive Forms with validation
+- **State Management**: RxJS BehaviorSubject (simple, lightweight)
+- **Data Persistence**: localStorage
+- **Icons**: Material Symbols Outlined
+- **Fonts**: Inter (UI) and JetBrains Mono (data)
+- **Build Tool**: Angular CLI
 
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-resume project/
-├── start.bat                           # 🚀 One-click full screen launcher
-├── run.bat                             # Alias launcher
-├── e2e-screenshots/                    # Captured E2E browser screenshots
-├── scripts/
-│   └── e2e-test.mjs                    # Automated E2E test script (Puppeteer + Edge)
-├── src/
-│   ├── app/
-│   │   ├── core/
-│   │   │   └── services/               # Storage, Application, Interview, Theme, Toast, Dialog
-│   │   ├── features/
-│   │   │   ├── analytics/              # Live charts & conversion funnel
-│   │   │   ├── applications/           # Table/grid list, add/edit form, detail view
-│   │   │   ├── dashboard/              # Stat cards, recent apps, interview widget
-│   │   │   ├── interviews/             # Schedule modal, upcoming/past bento cards
-│   │   │   ├── saved/                  # Bookmarked jobs & move to pipeline
-│   │   │   └── settings/               # Dark mode, JSON export, reset data
-│   │   ├── shared/
-│   │   │   ├── components/             # Sidebar, MobileNav, Toast, ConfirmDialog
-│   │   │   └── models/                 # TypeScript models & interfaces
-│   │   ├── app.component.ts            # Global shell layout
-│   │   └── app.routes.ts               # Route declarations
-│   ├── index.html                      # Stitch tokens, Google Fonts, Tailwind CDN
-│   ├── main.ts                         # Bootstrap
-│   └── styles.scss                     # Global styles, scrollbars, timeline lines
-├── angular.json                        # Angular CLI build configuration
-├── package.json                        # Dependencies & scripts
-└── README.md                           # Project documentation
+src/
+├── app/
+│   ├── core/
+│   │   └── services/
+│   │       ├── storage.service.ts      # localStorage wrapper
+│   │       ├── application.service.ts # Application CRUD
+│   │       ├── interview.service.ts   # Interview CRUD
+│   │       ├── theme.service.ts       # Theme management
+│   │       └── toast.service.ts       # Notification system
+│   ├── features/
+│   │   ├── dashboard/
+│   │   ├── applications/
+│   │   ├── interviews/
+│   │   ├── saved/
+│   │   ├── analytics/
+│   │   └── settings/
+│   ├── shared/
+│   │   ├── components/
+│   │   │   ├── sidebar/
+│   │   │   ├── mobile-nav/
+│   │   │   ├── toast/
+│   │   │   └── confirm-dialog/
+│   │   └── models/
+│   │       └── application.model.ts
+│   ├── app.component.ts
+│   ├── app.routes.ts
+│   └── app.config.ts
+├── index.html
+└── styles.scss
 ```
 
----
+## Setup Instructions
 
-## 🚀 Manual Running Instructions
+### Prerequisites
+- Node.js (v18 or higher)
+- npm (v9 or higher)
 
-If you prefer using the terminal directly:
+### Installation
 
-1. **Install dependencies**:
+1. **Clone or extract the project** to your desired location
+
+2. **Navigate to the project directory**:
+   ```bash
+   cd "C:\Users\acer\Music\resume project"
+   ```
+
+3. **Install dependencies**:
    ```bash
    npm install
    ```
 
-2. **Start the development server**:
+4. **Run the development server**:
    ```bash
-   npm start
+   ng serve
    ```
 
-3. **Open in browser**:
-   Navigate to:
+5. **Open your browser** and navigate to:
    ```
-   http://localhost:4200/
-   ```
-
-4. **Run E2E Browser Test Suite**:
-   ```bash
-   node scripts/e2e-test.mjs
+   http://localhost:4200
    ```
 
-5. **Build for production**:
-   ```bash
-   npm run build
-   ```
+### Build for Production
+
+```bash
+ng build
+```
+
+The production build will be created in the `dist/` directory.
+
+## Usage
+
+### First Run
+The application automatically seeds with sample data (Google, Stripe, Linear, etc.) on first load to demonstrate functionality.
+
+### Adding Applications
+1. Navigate to the Applications page
+2. Click "Add Application" or use the mobile FAB
+3. Fill in the form with company, role, job link, and other details
+4. Click "Save Application"
+
+### Managing Interviews
+1. Go to the Interview Tracker page
+2. Click "Schedule Interview"
+3. Select the linked application and enter interview details
+4. Interviews also appear on the linked application's detail page
+
+### Using Analytics
+- View the Analytics page for:
+  - Application status distribution (donut chart)
+  - Application volume over time (bar chart)
+  - Job type breakdown (progress bars)
+  - Interview and offer conversion rates
+
+### Theme Switching
+- Toggle between light and dark mode in Settings
+- Theme preference persists across sessions
+
+### Data Management
+- **Export**: Download all data as JSON from Settings
+- **Reset**: Clear all data and restore seed data from Settings
+
+## Data Models
+
+### Application
+```typescript
+{
+  id: string;
+  company: string;
+  role: string;
+  jobLink: string;
+  location: string;
+  jobType: 'Remote' | 'Hybrid' | 'Onsite';
+  status: 'Applied' | 'Interview' | 'Offer' | 'Rejected';
+  appliedDate: Date | string;
+  salaryRange?: string;
+  notes?: string;
+  statusHistory: { status: string; date: Date | string; notes?: string }[];
+  isSaved: boolean;
+}
+```
+
+### Interview
+```typescript
+{
+  id: string;
+  applicationId: string;
+  roundName: string;
+  dateTime: Date | string;
+  mode: 'Online' | 'Onsite' | 'Phone';
+  notes?: string;
+}
+```
+
+## Design
+
+The application follows the supplied Stitch UI designs with:
+- **Primary Color**: Purple/Indigo theme (#3525cd, #4f46e5)
+- **Typography**: Inter for UI, JetBrains Mono for data
+- **Components**: Material Design-inspired cards, badges, and navigation
+- **Responsive**: Desktop sidebar navigation, mobile bottom navigation
+- **Dark Mode**: Full theme support with persistent preferences
+
+## Key Features Explained
+
+### localStorage Persistence
+All data is stored in the browser's localStorage, making the app work entirely client-side without a backend. Data persists across browser sessions.
+
+### Reactive State Management
+Uses RxJS BehaviorSubject for simple, effective state management without the complexity of NgRx or similar libraries.
+
+### Form Validation
+- Required fields validation
+- URL validation for job links
+- Real-time validation feedback
+- Error messages displayed inline
+
+### Responsive Design
+- Desktop (1440px+): Full sidebar navigation
+- Tablet: Adapted layouts with responsive grids
+- Mobile (375px+): Bottom navigation, FAB actions, stacked layouts
+
+## Notes
+
+- This is a portfolio/resume project designed for demonstration purposes
+- Not intended for production use
+- No authentication, real API calls, or external database
+- Charts implemented using pure CSS (no external chart libraries)
+- Material Icons loaded via Google Fonts CDN
+
+## License
+
+This project is created for educational and portfolio demonstration purposes.

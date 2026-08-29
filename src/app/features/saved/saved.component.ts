@@ -1,187 +1,148 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ApplicationService } from '../../core/services/application.service';
 import { ToastService } from '../../core/services/toast.service';
-import { DialogService } from '../../core/services/dialog.service';
 import { Application } from '../../shared/models/application.model';
 
 @Component({
   selector: 'app-saved',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
-    <main class="flex-1 p-4 md:p-10 max-w-7xl mx-auto w-full flex flex-col gap-6">
+    <div class="p-4 md:p-10 max-w-7xl mx-auto flex flex-col gap-8">
       <!-- Page Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <header class="flex justify-between items-end border-b border-outline-variant pb-4">
         <div>
-          <div class="flex items-center gap-2.5">
-            <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-on-surface dark:text-[#fcf8ff]">Saved Jobs</h2>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-fixed-dim">
-              {{ savedJobs.length }}
-            </span>
-          </div>
-          <p class="text-sm md:text-base text-on-surface-variant dark:text-gray-400 mt-1">
-            Bookmarked positions to research, tailor resumes for, or apply to later.
-          </p>
+          <h2 class="text-3xl font-bold text-on-surface">Saved Jobs</h2>
+          <p class="text-base text-on-surface-variant mt-2">Manage and review your bookmarked opportunities.</p>
         </div>
+        <div class="hidden sm:flex items-center gap-2">
+          <span class="text-xs uppercase tracking-wider text-on-surface-variant">Sort by:</span>
+          <select 
+            [(ngModel)]="sortBy"
+            (change)="sortSavedJobs()"
+            class="bg-surface border border-outline-variant text-sm rounded-md py-1 px-2 focus:ring-primary focus:border-primary">
+            <option value="newest">Date Saved (Newest)</option>
+            <option value="oldest">Date Saved (Oldest)</option>
+            <option value="company">Company (A-Z)</option>
+          </select>
+        </div>
+      </header>
 
-        <button 
-          (click)="navigateToAddSaved()"
-          class="px-4 py-2 bg-primary text-on-primary rounded-xl text-sm font-semibold hover:opacity-90 transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95 self-start sm:self-auto">
-          <span class="material-symbols-outlined text-lg">bookmark_add</span>
-          <span>Bookmark New Job</span>
-        </button>
-      </div>
-
-      <!-- Saved Jobs Grid -->
-      <div *ngIf="savedJobs.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div 
-          *ngFor="let job of savedJobs"
-          class="bg-surface dark:bg-[#262530] border border-outline-variant dark:border-[#3d3b4a] rounded-2xl p-6 shadow-sm hover:border-primary/50 transition-all flex flex-col justify-between gap-5 group">
+      <!-- Grid Content -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let app of savedApplications" 
+             class="bg-surface rounded-xl border border-outline-variant p-4 flex flex-col justify-between hover:shadow-sm transition-shadow relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-primary-fixed/20 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
           
-          <!-- Header: Logo, Company & Role -->
           <div>
-            <div class="flex items-start justify-between gap-3">
-              <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-xl bg-secondary-container text-on-secondary-container font-bold text-base flex items-center justify-center shrink-0">
-                  {{ job.company.charAt(0).toUpperCase() }}
+            <div class="flex justify-between items-start mb-4 relative z-10">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant">
+                  <span class="material-symbols-outlined text-primary">business</span>
                 </div>
                 <div>
-                  <h3 class="font-bold text-base text-on-surface dark:text-[#fcf8ff] group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
-                    {{ job.company }}
-                  </h3>
-                  <p class="text-xs text-on-surface-variant dark:text-gray-400">{{ job.location || 'Remote' }}</p>
+                  <h3 class="font-semibold text-on-surface">{{ app.company }}</h3>
                 </div>
               </div>
-
-              <!-- Unsave Icon Button -->
               <button 
-                (click)="unsaveJob(job)"
-                class="p-1.5 rounded-lg text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-colors"
-                title="Remove from Saved">
-                <span class="material-symbols-outlined text-xl filled">bookmark</span>
+                (click)="unsaveJob(app.id)"
+                class="text-primary hover:text-primary-container focus:outline-none"
+                title="Unsave job">
+                <span class="material-symbols-outlined filled">bookmark</span>
               </button>
             </div>
-
-            <!-- Role Title -->
-            <h4 class="font-semibold text-sm md:text-base text-on-surface dark:text-[#fcf8ff] mt-3">
-              {{ job.role }}
-            </h4>
-
-            <!-- Metadata Badges -->
-            <div class="flex flex-wrap items-center gap-2 mt-2 text-xs">
-              <span class="px-2.5 py-0.5 rounded-lg bg-surface-container-low dark:bg-[#1f1e28] border border-outline-variant/60 dark:border-[#3d3b4a] text-on-surface-variant dark:text-gray-300">
-                {{ job.jobType }}
+            <h4 class="text-lg font-semibold text-on-background mb-2 relative z-10">{{ app.role }}</h4>
+            <div class="flex flex-wrap gap-2 mb-4 relative z-10">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs uppercase tracking-wider bg-secondary-fixed text-on-secondary-fixed">
+                <span class="material-symbols-outlined text-sm mr-1">location_on</span>
+                {{ app.location || 'Remote' }}
               </span>
-              <span *ngIf="job.salaryRange" class="px-2.5 py-0.5 rounded-lg bg-surface-container-low dark:bg-[#1f1e28] border border-outline-variant/60 dark:border-[#3d3b4a] text-on-surface-variant dark:text-gray-300 font-mono">
-                {{ job.salaryRange }}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs uppercase tracking-wider bg-surface-container-high text-on-surface-variant border border-outline-variant">
+                <span class="material-symbols-outlined text-sm mr-1">schedule</span>
+                {{ app.jobType }}
               </span>
             </div>
-
-            <!-- Notes Snippet -->
-            <p *ngIf="job.notes" class="text-xs text-on-surface-variant dark:text-gray-300 mt-3 line-clamp-3 bg-surface-container-low dark:bg-[#1f1e28] p-3 rounded-xl border border-outline-variant/40 dark:border-[#3d3b4a]">
-              {{ job.notes }}
-            </p>
           </div>
-
-          <!-- Actions Footer -->
-          <div class="pt-4 border-t border-outline-variant/50 dark:border-[#3d3b4a] flex flex-col gap-2.5">
-            <!-- Move to Applications Pipeline CTA -->
+          
+          <div class="flex items-center justify-between mt-auto pt-4 border-t border-outline-variant/50 relative z-10">
+            <span class="text-xs uppercase tracking-wider text-on-surface-variant flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">history</span>
+              Saved {{ getTimeSinceSaved(app.appliedDate) }}
+            </span>
             <button 
-              (click)="moveToApplications(job)"
-              class="w-full py-2 bg-primary text-on-primary rounded-xl text-xs font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer active:scale-98">
-              <span class="material-symbols-outlined text-base">send</span>
-              <span>Move to Active Applications</span>
+              (click)="moveToApplications(app.id)"
+              class="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg px-4 py-2 text-sm font-medium transition-colors flex items-center gap-2">
+              Apply Now <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
-
-            <!-- Links & Delete Sub-actions -->
-            <div class="flex items-center justify-between text-xs pt-1">
-              <a 
-                *ngIf="job.jobLink" 
-                [href]="job.jobLink" 
-                target="_blank" 
-                class="inline-flex items-center gap-1 text-primary dark:text-primary-fixed-dim hover:underline font-medium">
-                <span class="material-symbols-outlined text-sm">open_in_new</span>
-                <span>Job Posting</span>
-              </a>
-              <span *ngIf="!job.jobLink"></span>
-
-              <button 
-                (click)="confirmDelete(job)"
-                class="text-rose-600 hover:underline flex items-center gap-0.5">
-                <span class="material-symbols-outlined text-sm">delete</span>
-                <span>Delete</span>
-              </button>
-            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Empty State -->
-      <div 
-        *ngIf="savedJobs.length === 0" 
-        class="bg-surface dark:bg-[#262530] border border-outline-variant dark:border-[#3d3b4a] rounded-2xl p-12 text-center flex flex-col items-center justify-center gap-3">
-        <div class="w-14 h-14 rounded-full bg-surface-container dark:bg-[#383745] flex items-center justify-center text-primary dark:text-primary-fixed-dim">
-          <span class="material-symbols-outlined text-3xl">bookmark_border</span>
+        <div *ngIf="savedApplications.length === 0" 
+             class="col-span-full text-center py-12 text-on-surface-variant">
+          <span class="material-symbols-outlined text-4xl mb-2">bookmark_border</span>
+          <p>No saved jobs yet. Bookmark applications from the Applications page to see them here.</p>
         </div>
-        <h3 class="text-lg font-bold text-on-surface dark:text-[#fcf8ff]">No saved jobs yet</h3>
-        <p class="text-sm text-on-surface-variant dark:text-gray-400 max-w-md">
-          When browsing roles or saving positions to apply to later, bookmark them to keep them organized right here.
-        </p>
-        <button 
-          (click)="navigateToAddSaved()"
-          class="mt-2 px-5 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-semibold hover:opacity-90 transition-all">
-          + Bookmark First Opportunity
-        </button>
       </div>
-    </main>
+    </div>
   `
 })
 export class SavedComponent implements OnInit {
-  savedJobs: Application[] = [];
+  savedApplications: Application[] = [];
+  sortBy = 'newest';
 
   constructor(
     private applicationService: ApplicationService,
     private toastService: ToastService,
-    private dialogService: DialogService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.applicationService.applications$.subscribe(() => {
-      this.loadSavedJobs();
-    });
+    this.loadSavedApplications();
   }
 
-  private loadSavedJobs(): void {
-    this.savedJobs = this.applicationService.getSavedApplications();
+  loadSavedApplications(): void {
+    this.savedApplications = this.applicationService.getSavedApplications();
+    this.sortSavedJobs();
   }
 
-  moveToApplications(job: Application): void {
-    this.applicationService.moveToApplications(job.id);
-    this.toastService.success(`Moved ${job.company} (${job.role}) to active applications!`);
+  sortSavedJobs(): void {
+    switch (this.sortBy) {
+      case 'newest':
+        this.savedApplications.sort((a, b) => new Date(b.appliedDate).getTime() - new Date(a.appliedDate).getTime());
+        break;
+      case 'oldest':
+        this.savedApplications.sort((a, b) => new Date(a.appliedDate).getTime() - new Date(b.appliedDate).getTime());
+        break;
+      case 'company':
+        this.savedApplications.sort((a, b) => a.company.localeCompare(b.company));
+        break;
+    }
   }
 
-  unsaveJob(job: Application): void {
-    this.applicationService.toggleSave(job.id);
-    this.toastService.info(`Removed ${job.company} from saved jobs`);
+  unsaveJob(id: string): void {
+    this.applicationService.toggleSave(id);
+    this.toastService.success('Job removed from saved');
+    this.loadSavedApplications();
   }
 
-  confirmDelete(job: Application): void {
-    this.dialogService.confirm({
-      title: 'Delete Saved Job',
-      message: `Are you sure you want to delete this saved position for ${job.role} at ${job.company}?`,
-      confirmText: 'Delete',
-      isDestructive: true,
-      onConfirm: () => {
-        this.applicationService.deleteApplication(job.id);
-        this.toastService.success(`Deleted ${job.company}`);
-      }
-    });
+  moveToApplications(id: string): void {
+    this.applicationService.moveToApplications(id);
+    this.toastService.success('Job moved to applications');
+    this.loadSavedApplications();
   }
 
-  navigateToAddSaved(): void {
-    this.router.navigate(['/applications/new']);
+  getTimeSinceSaved(date: Date | string): string {
+    const now = new Date();
+    const savedDate = new Date(date);
+    const diffTime = Math.abs(now.getTime() - savedDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return '1d ago';
+    if (diffDays < 7) return `${diffDays}d ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+    return `${Math.floor(diffDays / 30)}mo ago`;
   }
 }

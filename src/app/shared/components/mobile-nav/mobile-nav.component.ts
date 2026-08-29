@@ -11,8 +11,13 @@ import { ThemeService } from '../../../core/services/theme.service';
     <!-- Top Mobile Header -->
     <header class="md:hidden flex justify-between items-center w-full px-4 h-14 fixed top-0 left-0 z-40 bg-surface/90 dark:bg-[#18171f]/90 backdrop-blur-md border-b border-outline-variant dark:border-[#2f2e3a] transition-colors">
       <div class="flex items-center gap-2">
-        <div class="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold text-sm">
-          <span class="material-symbols-outlined text-base">work</span>
+        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-[#4f46e5] flex items-center justify-center text-white shadow-md">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 12 L12 10 L16 12 L16 18 L12 20 L8 18 Z"/>
+            <path d="M8 12 L12 14 L16 12"/>
+            <path d="M12 14 L12 20"/>
+            <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+          </svg>
         </div>
         <h1 class="font-bold text-base tracking-tight text-primary dark:text-primary-fixed-dim">CareerStream</h1>
       </div>
