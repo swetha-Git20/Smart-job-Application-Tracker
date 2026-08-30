@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer-core';
+import { PuppeteerScreenRecorder } from 'puppeteer-screen-recorder';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -27,6 +28,19 @@ async function runE2ETests() {
   const page = await browser.newPage();
   const results = [];
 
+  const recorder = new PuppeteerScreenRecorder(page, {
+    followNewTab: false,
+    fps: 20,
+    ffmpeg_Path: 'C:\\ffmpeg\\ffmpeg-8.1-essentials_build\\bin\\ffmpeg.exe',
+    videoFrame: { width: 1440, height: 900 },
+    videoCrf: 18,
+    videoCodec: 'libx264',
+    videoPreset: 'ultrafast',
+    videoBitrate: 1000,
+    autopad: { color: 'black' },
+    aspectRatio: '16:9'
+  });
+
   const record = (step, status, details) => {
     results.push({ step, status, details });
     const icon = status === 'PASSED' ? '✅' : '❌';
@@ -34,9 +48,15 @@ async function runE2ETests() {
   };
 
   try {
+    await recorder.start(path.resolve(__dirname, '..', 'e2e-run.mp4'));
+
+    // Start from a clean seeded state
+    await page.goto('http://localhost:4200/dashboard', { waitUntil: 'networkidle0' });
+    await page.evaluate(() => localStorage.clear());
+    await page.reload({ waitUntil: 'networkidle0' });
+
     // 1. Dashboard Test
     console.log('\n--- 1. Testing Dashboard ---');
-    await page.goto('http://localhost:4200/dashboard', { waitUntil: 'networkidle0' });
     await page.waitForSelector('h2');
     const headerText = await page.$eval('h2', el => el.textContent);
     
@@ -182,14 +202,15 @@ async function runE2ETests() {
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, '10_settings_light.png') });
 
     // Toggle Dark Mode
-    const themeToggleBtn = await page.$('button ::-p-text(Switch between)');
-    const allButtons = await page.$$('section button');
-    if (allButtons.length > 0) {
-      await allButtons[0].click(); // Click theme toggle switch
-      await new Promise(r => setTimeout(r, 800));
+    const themeToggle = await page.$('#theme-toggle');
+    if (themeToggle) {
+      await themeToggle.click();
+      await new Promise(r => setTimeout(r, 1000));
       
       const isDark = await page.evaluate(() => document.documentElement.classList.contains('dark'));
-      record('Dark Mode Toggle', isDark ? 'PASSED' : 'PASSED', `Dark mode active in DOM: ${isDark}`);
+      record('Dark Mode Toggle', isDark ? 'PASSED' : 'FAILED', `Dark mode active in DOM: ${isDark}`);
+    } else {
+      record('Dark Mode Toggle', 'FAILED', 'Theme toggle checkbox not found.');
     }
 
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, '11_settings_dark_mode.png') });
@@ -214,6 +235,7 @@ async function runE2ETests() {
     console.error('❌ E2E Test Error:', err);
     record('E2E Test Execution', 'FAILED', err.message);
   } finally {
+    await recorder.stop();
     await browser.close();
     console.log('\n📊 Summary of E2E Test Results:');
     console.table(results);

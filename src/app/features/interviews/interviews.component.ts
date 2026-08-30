@@ -23,7 +23,7 @@ import { Interview, Application } from '../../shared/models/application.model';
             (click)="openAddModal()"
             class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:opacity-90 shadow-sm">
             <span class="material-symbols-outlined text-[18px]">add_circle</span>
-            Schedule Interview
+            New Interview
           </button>
         </div>
       </header>
@@ -168,7 +168,7 @@ import { Interview, Application } from '../../shared/models/application.model';
               <input 
                 formControlName="roundName"
                 class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-                placeholder="e.g. Technical Round 1">
+                placeholder="Technical Screen">
             </div>
 
             <div class="space-y-1">
@@ -211,7 +211,7 @@ import { Interview, Application } from '../../shared/models/application.model';
                 type="button"
                 [disabled]="interviewForm.invalid"
                 class="px-4 py-2 rounded-lg bg-primary text-on-primary font-medium hover:opacity-90 shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                {{ isEditMode ? 'Update' : 'Schedule' }}
+                Schedule Interview
               </button>
             </div>
           </form>
@@ -227,11 +227,12 @@ export class InterviewsComponent implements OnInit {
   pastInterviews: Interview[] = [];
   filteredInterviews: Interview[] = [];
   filter = 'upcoming';
-  
+
   showModal = false;
   isEditMode = false;
   editingInterviewId: string | null = null;
-  
+  preselectedApplicationId = '';
+
   interviewForm: FormGroup;
 
   constructor(
@@ -257,7 +258,7 @@ export class InterviewsComponent implements OnInit {
     // Check if applicationId is passed in query params
     this.route.queryParams.subscribe(params => {
       if (params['applicationId']) {
-        this.interviewForm.patchValue({ applicationId: params['applicationId'] });
+        this.preselectedApplicationId = params['applicationId'];
         this.openAddModal();
       }
     });
@@ -283,13 +284,19 @@ export class InterviewsComponent implements OnInit {
   openAddModal(): void {
     this.isEditMode = false;
     this.editingInterviewId = null;
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setMinutes(tomorrow.getMinutes() - tomorrow.getTimezoneOffset());
+    const defaultDateTime = tomorrow.toISOString().slice(0, 16);
+
     this.interviewForm.reset({
-      applicationId: '',
+      applicationId: this.preselectedApplicationId,
       roundName: '',
-      dateTime: '',
+      dateTime: defaultDateTime,
       mode: 'Online',
       notes: ''
     });
+    this.preselectedApplicationId = '';
     this.showModal = true;
   }
 

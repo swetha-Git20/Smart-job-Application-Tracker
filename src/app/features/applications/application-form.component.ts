@@ -25,7 +25,7 @@ import { Application } from '../../shared/models/application.model';
 
         <!-- Modal Body -->
         <div class="p-6 overflow-y-auto flex-1">
-          <form [formGroup]="applicationForm" class="space-y-6">
+          <form id="application-form" [formGroup]="applicationForm" (ngSubmit)="saveApplication()" class="space-y-6">
             <!-- Core Details -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-1 md:col-span-2">
@@ -77,7 +77,7 @@ import { Application } from '../../shared/models/application.model';
                   class="w-full appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
                   id="status">
                   <option value="Applied">Applied</option>
-                  <option value="Interview">Interviewing</option>
+                  <option value="Interview">Interview</option>
                   <option value="Offer">Offer</option>
                   <option value="Rejected">Rejected</option>
                 </select>
@@ -144,12 +144,14 @@ import { Application } from '../../shared/models/application.model';
         <!-- Modal Footer -->
         <div class="p-6 border-t border-outline-variant bg-surface-container-lowest/50 rounded-b-xl flex justify-end gap-3">
           <button 
+            type="button"
             (click)="cancel()"
             class="px-4 py-2 rounded-lg border border-outline-variant text-on-surface font-medium hover:bg-surface-container-high transition-colors">
             Cancel
           </button>
           <button 
-            (click)="saveApplication()"
+            form="application-form"
+            type="submit"
             [disabled]="applicationForm.invalid"
             class="px-4 py-2 rounded-lg bg-primary text-on-primary font-medium hover:opacity-90 shadow-sm transition-all flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed">
             <span class="material-symbols-outlined text-[18px]">save</span>
@@ -223,15 +225,16 @@ export class ApplicationFormComponent implements OnInit {
         appliedDate: new Date(formValue.appliedDate)
       });
       this.toastService.success('Application updated successfully');
-    } else {
-      this.applicationService.createApplication({
-        ...formValue,
-        appliedDate: new Date(formValue.appliedDate)
-      });
-      this.toastService.success('Application created successfully');
+      this.router.navigate(['/applications', this.applicationId]);
+      return;
     }
 
-    this.router.navigate(['/applications']);
+    const newApplication = this.applicationService.createApplication({
+      ...formValue,
+      appliedDate: new Date(formValue.appliedDate)
+    });
+    this.toastService.success('Application created successfully');
+    this.router.navigate(['/applications', newApplication.id]);
   }
 
   cancel(): void {

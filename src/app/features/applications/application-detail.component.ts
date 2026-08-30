@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApplicationService } from '../../core/services/application.service';
 import { InterviewService } from '../../core/services/interview.service';
@@ -9,7 +10,7 @@ import { Application, Interview } from '../../shared/models/application.model';
 @Component({
   selector: 'app-application-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="px-4 md:px-10 py-8 max-w-7xl mx-auto">
       <!-- Header -->
@@ -34,6 +35,18 @@ import { Application, Interview } from '../../shared/models/application.model';
           <span [ngClass]="getStatusClass(application?.status)" class="inline-flex items-center px-3 py-1 rounded-full text-xs uppercase tracking-wider">
             {{ application?.status }}
           </span>
+
+          <select
+            *ngIf="application"
+            (change)="onStatusChange($any($event.target).value)"
+            [value]="application.status"
+            class="bg-surface-container-lowest border border-outline-variant text-on-surface text-xs uppercase tracking-wider rounded-full px-3 py-1 focus:outline-none focus:border-primary">
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview</option>
+            <option value="Offer">Offer</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+
           <button 
             (click)="editApplication()"
             class="px-4 py-2 rounded-lg border border-outline-variant font-medium hover:bg-surface-container-highest transition-colors">
@@ -137,8 +150,9 @@ import { Application, Interview } from '../../shared/models/application.model';
               <h2 class="text-lg font-semibold">Interviews</h2>
               <button 
                 (click)="addInterview()"
-                class="p-1 rounded hover:bg-surface-container-highest transition-colors text-primary">
-                <span class="material-symbols-outlined text-xl">add</span>
+                class="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-sm font-medium hover:opacity-90 transition-colors flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                Schedule Interview
               </button>
             </div>
             <div class="flex flex-col gap-3">
@@ -233,6 +247,13 @@ export class ApplicationDetailComponent implements OnInit {
     if (this.application) {
       this.router.navigate(['/applications', this.application.id, 'edit']);
     }
+  }
+
+  onStatusChange(newStatus: string): void {
+    if (!this.application) return;
+    this.applicationService.updateStatus(this.application.id, newStatus as any);
+    this.toastService.success(`Status updated to ${newStatus}`);
+    this.loadApplication(this.application.id);
   }
 
   addInterview(): void {
